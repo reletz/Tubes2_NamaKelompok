@@ -9,5 +9,5 @@ import (
 func main(){
 	fmt.Println("Halo!");
 	scraper.Scraper();
-	scraper.MapScraper();
+	scraper.GraphScraper();
 }

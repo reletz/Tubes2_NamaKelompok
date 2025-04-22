@@ -11,7 +11,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func MapScraper() {
+func GraphScraper() {
 	url := "https://little-alchemy.fandom.com/wiki/Elements_(Little_Alchemy_2)"
 	graph := make(map[string][][]string)
 
@@ -57,6 +57,32 @@ func MapScraper() {
 		})
 	})
 
+	// Bikin ReverseGraph
+	// Generate sementara dalam map[string]map[string]bool
+	tempReverse := make(map[string]map[string]bool)
+
+	for result, pairs := range graph {
+		for _, pair := range pairs {
+			if len(pair) == 2 {
+				for _, comp := range pair {
+					if _, exists := tempReverse[comp]; !exists {
+						tempReverse[comp] = make(map[string]bool)
+					}
+					tempReverse[comp][result] = true
+				}
+			}
+		}
+	}
+
+	// Convert to final map[string][]string
+	reverseGraph := make(map[string][]string)
+	for comp, resultSet := range tempReverse {
+		for result := range resultSet {
+			reverseGraph[comp] = append(reverseGraph[comp], result)
+		}
+	}
+
+
 	// Simpan graph langsung
 	file, _ := os.Create("data/graph.json")
 	defer file.Close()
@@ -68,4 +94,16 @@ func MapScraper() {
 	file.Write(data)
 
 	fmt.Println("Graph langsung disimpan ke graph.json")
+
+	// Simpan ReverseGraph
+	out, err := json.MarshalIndent(reverseGraph, "", "  ")
+	if err != nil {
+		log.Fatal("Failed to convert to JSON:", err)
+	}
+
+	if err := os.WriteFile("data/reverseGraph.json", out, 0644); err != nil {
+		log.Fatal("Failed to save file:", err)
+	}
+
+	fmt.Println("File reverseGraph.json berhasil dibuat")
 }
