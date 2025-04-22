@@ -83,7 +83,7 @@ func Scraper() {
 		})		
 	})
 
-	file, _ := os.Create("recipes.json");
+	file, _ := os.Create("data/recipes.json");
 	defer file.Close();
 
 	enc := json.NewEncoder(file)
