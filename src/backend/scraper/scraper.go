@@ -1,25 +1,26 @@
 package scraper
 
 import (
-	"fmt"
-	"net/http"
-	"log"
-	"strings"
-	"os"
 	"encoding/json"
-	
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+	"backend/util"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
-type Recipe struct {
-	Result     string   `json:"result"`
-	Components []string `json:"components"`
+type RecipeJSON struct {
+	Pair1  string `json:"pair1"`
+	Pair2  string `json:"pair2"`
+	Result string `json:"result"`
 }
 
-func Scraper() {
+func Scraper(combinations *(map[util.Pair]string), saveToFile bool) {
 	url := "https://little-alchemy.fandom.com/wiki/Elements_(Little_Alchemy_2)"
 
-	// Ambil HTML-nya
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal("Failed to connect to the target page", err)
@@ -28,39 +29,23 @@ func Scraper() {
 
 	if resp.StatusCode != 200 {
 		log.Fatalf("HTTP Error %d: %s", resp.StatusCode, resp.Status)
- 	}
+	}
 
-  
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		log.Fatal("Failed to parse the HTML document", err)
 	}
 
-	var recipes []Recipe;
+	lookup := make(map[util.Pair]string)
 
-	// Each iterates over a Selection object, executing a function for each matched element. 
-	// It returns the current Selection object. 
-	// The function f is called for each element in the selection with the index of the element in that selection starting at 0, 
-	// and a *Selection that contains only that element.
 	doc.Find("table.list-table.col-list.icon-hover tbody tr").Each(func(i int, row *goquery.Selection) {
 		tds := row.Find("td")
 		if tds.Length() < 2 {
 			return
 		}
-		
-		// Eq reduces the set of matched elements to the one at the specified index. 
-		// If a negative index is given, it counts backwards starting at the end of the set. 
-		// It returns a new Selection object, and an empty Selection object if the index is invalid.
 
-		// Eq(0) = ambil kolom 1 (0 kalo zero-indexing)
 		result := strings.TrimSpace(tds.Eq(0).Find("a").Text())
 
-		// Exclude element dasar dari recipe
-		if result == "Fire" || result == "Water" || result == "Air" {
-			result = "";
-		}
-	
-		// Eq(1) = ambil kolom 0 (1 kalo zero-indexing)
 		tds.Eq(1).Find("li").Each(func(_ int, li *goquery.Selection) {
 			parts := []string{}
 			li.Find("a").Each(func(_ int, a *goquery.Selection) {
@@ -69,26 +54,56 @@ func Scraper() {
 					parts = append(parts, text)
 				}
 			})
-		
+
 			if len(parts) == 2 && result != "" {
-				r := Recipe{
-					Result:     strings.TrimSpace(result),
-					Components: []string{
-						strings.TrimSpace(parts[0]),
-						strings.TrimSpace(parts[1]),
-					},
+				pair := util.Pair{
+					First: parts[0],
+					Second: parts[1],
 				}
-				recipes = append(recipes, r)
+
+				lookup[pair] = result;
+				
+				// kalau parts[0] != parts[1], tambahin duplikat kebalikannya
+				if parts[0] != parts[1] {
+					pair = util.Pair{
+						First: parts[1],
+						Second: parts[0],
+					}
+
+					lookup[pair] = result
+				}
 			}
-		})		
+		})
 	})
 
-	file, _ := os.Create("data/recipes.json");
-	defer file.Close();
+	if saveToFile {
+		file, err := os.Create("data/recipes.json")
+		if err != nil {
+			log.Fatal("Failed to create file", err)
+		}
+		defer file.Close()
 
-	enc := json.NewEncoder(file)
-	enc.SetIndent("", "  ")
-	enc.Encode(recipes)
+		// CONVERT map[Pair]string --> []RecipeJSON
+		var recipes []RecipeJSON
+		for k, v := range lookup {
+			recipes = append(recipes, RecipeJSON{
+				Pair1:  k.First,
+				Pair2:  k.Second,
+				Result: v,
+			})
+		}
 
-	fmt.Println("Done. Saved to recipes.json")
+		enc := json.NewEncoder(file)
+		enc.SetIndent("", "  ")
+		if err := enc.Encode(recipes); err != nil {
+			log.Fatal("Failed to encode JSON", err)
+		}
+		fmt.Println("Done. Saved to recipes.json")
+	} else {
+		fmt.Print("Done. ")
+	}
+
+	fmt.Println("Lookup available in memory.")
+
+	*combinations = lookup
 }

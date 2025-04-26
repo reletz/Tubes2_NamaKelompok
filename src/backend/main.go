@@ -2,12 +2,14 @@ package main
 
 import (
 	"backend/scraper"
+	"backend/util"
 	"fmt"
 )
 
 
 func main(){
 	fmt.Println("Halo!");
-	scraper.Scraper();
-	scraper.GraphScraper();
+	var recipes map[util.Pair]string;
+	scraper.Scraper(&recipes, false);
+	// scraper.GraphScraper();
 }
