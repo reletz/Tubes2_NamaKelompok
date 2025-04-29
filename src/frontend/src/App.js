@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Search from './pages/Search';
@@ -9,13 +9,27 @@ import Ingredients from './pages/Ingredients';
 const App = () => {
   return (
     <BrowserRouter>
-      <nav>
-        <Link to="/">Home</Link> |
-        <Link to="/about">About</Link> |
-        <Link to="/search">Search</Link> |
-        <Link to="/recipes">Recipes</Link> |
-        <Link to="/ingredients">Ingredients</Link> |
-      </nav>
+      <div className="App">
+        <AppContent />
+      </div>
+    </BrowserRouter>
+  );
+};
+
+const AppContent = () => {
+  const location = useLocation();
+
+  return (
+    <>
+      {location.pathname !== '/' && (
+        <nav className="Main-navbar">
+          <Link to="/">BERANDA</Link>
+          <Link to="/search">CARI RESEP</Link>
+          <Link to="/recipes">LIHAT RESEP</Link>
+          <Link to="/ingredients">LIHAT BAHAN</Link>
+          <Link to="/about">TENTANG KAMI</Link>
+        </nav>
+      )}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -23,7 +37,7 @@ const App = () => {
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/ingredients" element={<Ingredients />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 
