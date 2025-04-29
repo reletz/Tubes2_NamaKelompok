@@ -188,29 +188,6 @@
   text-shadow: none;
 }
 
-.About-title {
-  display: flex;
-  flex-direction: column;
-  top: 16%; 
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: "Pyxxl";
-  font-size: calc(4px + 2vmin);
-  color: #f8f8f8;
-  transform: translateX(-50%);
-  position: absolute;
-}
-
-.About-title p {
-  margin: 0;
-  text-shadow: 
-  -6px -6px 0 #341E09,
-   6px -6px 0 #341E09,
-  -6px  6px 0 #341E09,
-   6px  6px 0 #341E09;
-  white-space: nowrap;
-}
-
 .Main-navbar {
   position: absolute;
   top: 5%;
@@ -232,53 +209,72 @@
   text-decoration: underline;
 }
 
-.About-image-avatars {
-  position: absolute;
-  top: 26%;
-  left: 13%;
+.About-container {
+  position: relative;
+  min-height: 100%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.About-title {
+  text-align: center;
+  font-family: "Pyxxl";
+  font-size: calc(7px + 2vmin);
+  color: #f8f8f8;
+  text-shadow: 
+    -6px -6px 0 #341E09,
+     6px -6px 0 #341E09,
+    -6px  6px 0 #341E09,
+     6px  6px 0 #341E09;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.About-cards {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 40px;
 }
 
-.Lana-avatar,
-.Lucas-avatar,
-.Nau-avatar {
+.About-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 70%;
+}
+
+.About-avatar {
   height: 30vmin;
-  margin-bottom: 40px;
+  /* margin-right: 10px; */
 }
 
-.About-authors-lana {
-  position: absolute;
-  top: 29%;
-  left: 30%;
-  right: 20%;
-}
-
-.About-authors-lucas {
-  position: absolute;
-  top: 64%;
-  left: 30%;
-  right: 20%;
-}
-
-.About-authors-nau {
-  position: absolute;
-  top: 99%;
-  left: 30%;
-  right: 20%;
-}
-
-.About-authors-lana p, .About-authors-lucas p, .About-authors-nau p {
-  margin: 0;
+.About-info {
   font-family: "Retro Gaming";
-  font-weight: 400;
-  font-size: calc(4px + 2vmin);
   color: white;
+  text-align: left;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.About-info h2, .About-info h3 {
+  font-size: calc(8px + 2vmin);
   text-shadow: 
-  -3px -3px 0 #341E09,
-   3px -3px 0 #341E09,
-  -3px  3px 0 #341E09,
-   3px  3px 0 #341E09;
+    -3px -3px 0 #341E09,
+     3px -3px 0 #341E09,
+    -3px  3px 0 #341E09,
+     3px  3px 0 #341E09;
+  margin: 0;
+}
+
+.About-info p {
+  margin-top: 30px;
+  font-size: calc(3px + 2vmin);
   text-align: justify;
+  width: 95%;
+  text-shadow: 
+    -2px -2px 0 #341E09,
+     2px -2px 0 #341E09,
+    -2px  2px 0 #341E09,
+     2px  2px 0 #341E09;
 }
