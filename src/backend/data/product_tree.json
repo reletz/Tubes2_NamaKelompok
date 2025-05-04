@@ -1,0 +1,179 @@
+{
+  "name": "Human",
+  "children": [
+    {
+      "name": "Life",
+      "children": [
+        {
+          "name": "Sea",
+          "children": [
+            {
+              "name": "Lake",
+              "children": [
+                {
+                  "name": "Pond",
+                  "children": [
+                    {
+                      "name": "Puddle",
+                      "children": [
+                        {
+                          "name": "Water"
+                        },
+                        {
+                          "name": "Water"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Water"
+                    }
+                  ]
+                },
+                {
+                  "name": "Pond",
+                  "children": [
+                    {
+                      "name": "Puddle",
+                      "children": [
+                        {
+                          "name": "Water"
+                        },
+                        {
+                          "name": "Water"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Water"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Water"
+            }
+          ]
+        },
+        {
+          "name": "Lightning",
+          "children": [
+            {
+              "name": "Cloud",
+              "children": [
+                {
+                  "name": "Atmosphere",
+                  "children": [
+                    {
+                      "name": "Planet",
+                      "children": [
+                        {
+                          "name": "Continent",
+                          "children": [
+                            {
+                              "name": "Earth"
+                            },
+                            {
+                              "name": "Land",
+                              "children": [
+                                {
+                                  "name": "Earth"
+                                },
+                                {
+                                  "name": "Earth"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Continent",
+                          "children": [
+                            {
+                              "name": "Earth"
+                            },
+                            {
+                              "name": "Land",
+                              "children": [
+                                {
+                                  "name": "Earth"
+                                },
+                                {
+                                  "name": "Earth"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Air"
+                    }
+                  ]
+                },
+                {
+                  "name": "Mist",
+                  "children": [
+                    {
+                      "name": "Air"
+                    },
+                    {
+                      "name": "Water"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Energy",
+              "children": [
+                {
+                  "name": "Fire"
+                },
+                {
+                  "name": "Fire"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Clay",
+      "children": [
+        {
+          "name": "Mud",
+          "children": [
+            {
+              "name": "Earth"
+            },
+            {
+              "name": "Water"
+            }
+          ]
+        },
+        {
+          "name": "Stone",
+          "children": [
+            {
+              "name": "Earth"
+            },
+            {
+              "name": "Pressure",
+              "children": [
+                {
+                  "name": "Air"
+                },
+                {
+                  "name": "Air"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
