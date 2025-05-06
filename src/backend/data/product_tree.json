@@ -5,136 +5,56 @@
       "name": "Life",
       "children": [
         {
-          "name": "Sea",
+          "name": "Primordial soup",
           "children": [
             {
-              "name": "Lake",
+              "name": "Sea",
               "children": [
                 {
-                  "name": "Pond",
+                  "name": "Lake",
                   "children": [
                     {
-                      "name": "Puddle",
+                      "name": "Water"
+                    },
+                    {
+                      "name": "Pond",
                       "children": [
                         {
                           "name": "Water"
                         },
                         {
-                          "name": "Water"
+                          "name": "Puddle",
+                          "children": [
+                            {
+                              "name": "Water"
+                            },
+                            {
+                              "name": "Water"
+                            }
+                          ]
                         }
                       ]
-                    },
-                    {
-                      "name": "Water"
                     }
                   ]
                 },
                 {
-                  "name": "Pond",
-                  "children": [
-                    {
-                      "name": "Puddle",
-                      "children": [
-                        {
-                          "name": "Water"
-                        },
-                        {
-                          "name": "Water"
-                        }
-                      ]
-                    },
-                    {
-                      "name": "Water"
-                    }
-                  ]
+                  "name": "Water"
                 }
               ]
             },
             {
-              "name": "Water"
+              "name": "Earth"
             }
           ]
         },
         {
-          "name": "Lightning",
+          "name": "Energy",
           "children": [
             {
-              "name": "Cloud",
-              "children": [
-                {
-                  "name": "Atmosphere",
-                  "children": [
-                    {
-                      "name": "Planet",
-                      "children": [
-                        {
-                          "name": "Continent",
-                          "children": [
-                            {
-                              "name": "Earth"
-                            },
-                            {
-                              "name": "Land",
-                              "children": [
-                                {
-                                  "name": "Earth"
-                                },
-                                {
-                                  "name": "Earth"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "name": "Continent",
-                          "children": [
-                            {
-                              "name": "Earth"
-                            },
-                            {
-                              "name": "Land",
-                              "children": [
-                                {
-                                  "name": "Earth"
-                                },
-                                {
-                                  "name": "Earth"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "name": "Air"
-                    }
-                  ]
-                },
-                {
-                  "name": "Mist",
-                  "children": [
-                    {
-                      "name": "Air"
-                    },
-                    {
-                      "name": "Water"
-                    }
-                  ]
-                }
-              ]
+              "name": "Fire"
             },
             {
-              "name": "Energy",
-              "children": [
-                {
-                  "name": "Fire"
-                },
-                {
-                  "name": "Fire"
-                }
-              ]
+              "name": "Fire"
             }
           ]
         }

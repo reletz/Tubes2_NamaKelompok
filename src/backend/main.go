@@ -9,12 +9,14 @@ import (
 
 func main(){
 	rawRecipe := make(map[util.Pair][]string)
-	scraper.Scraper(rawRecipe, true)
+	reversedRawRecipe := make(map[string][]util.Pair)
+	scraper.Scraper(rawRecipe, reversedRawRecipe, true)
 	
 	target := "Human"
 
 	start1 := time.Now()
 	prev1 := util.ShortestBfs(target, rawRecipe)
+	fmt.Println(prev1["Acid rain"])
 	tree1 := util.BuildTree(target, prev1)
 	elapsed1 := time.Since(start1)
 
@@ -24,16 +26,12 @@ func main(){
 	util.SaveToJSON(tree1, "data/product_tree.json")
 
 
-	start := time.Now()
-	recipes := util.MultipleRecipeBFS(target, rawRecipe, 8)
-	elapsed := time.Since(start)
+	// start := time.Now()
+	// recipes := util.MultipleBfs(target, reversedRawRecipe, 3)
+	// path2 := util.ConvertPathsToTrees(recipes, rawRecipe)
+	// elapsed := time.Since(start)
 	
-	fmt.Printf("Found %d recipes for %s in %v\n", len(recipes), target, elapsed)
+	// fmt.Printf("Found %d recipes for %s in %v\n", len(recipes), target, elapsed)
+	// util.SaveMultipleToJSON(path2, "data/awokawok.json")
 	
-	// Save each recipe tree to a separate JSON file
-	for i, recipe := range recipes {
-			filename := fmt.Sprintf("data/product_tree_%s_recipe%d.json", target, i+1)
-			util.SaveToJSON(recipe, filename)
-			fmt.Printf("Recipe %d saved to %s\n", i+1, filename)
-	}
 }

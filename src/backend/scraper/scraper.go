@@ -9,16 +9,19 @@ import (
 	"strings"
 
 	"backend/util"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
 type RecipeJSON struct {
 	Result       string     `json:"Result"`
+	Asset				 string			`json:"Asset"`
 	Combinations util.Pair  `json:"Combinations"`
 }
 
 func Scraper(
 	combinations map[util.Pair][]string,
+	revCombinations map[string][]util.Pair,
 	saveToFile bool,
 ) {
 	url := "https://little-alchemy.fandom.com/wiki/Elements_(Little_Alchemy_2)"
@@ -37,6 +40,8 @@ func Scraper(
 		log.Fatal("Failed to parse the HTML document:", err)
 	}
 
+	assetMap := make(map[string]string)
+
 	// Parse the table and gather combinations
 	doc.Find("table.list-table.col-list.icon-hover tbody tr").Each(func(_ int, row *goquery.Selection) {
 		cols := row.Find("td")
@@ -44,16 +49,28 @@ func Scraper(
 			return
 		}
 		result := strings.TrimSpace(cols.Eq(0).Find("a").Text())
-		if result == "" {
+		if result == "" || result == "Time" {
 			return
 		}
+
+		hrefVal, exists := cols.Eq(0).Find("span a").Attr("href")
+		asset := ""
+		if exists {
+			asset = strings.TrimSpace(hrefVal)
+		}
+		
+		if asset == "" {
+			asset = "https://static.wikia.nocookie.net/little-alchemy/images/6/63/Time_2.svg/revision/latest?cb=20210827124225"
+		}
+
+		assetMap[result] = asset
 
 		// Process combinations from the second column
 		cols.Eq(1).Find("li").Each(func(_ int, li *goquery.Selection) {
 			parts := []string{}
 			li.Find("a").Each(func(_ int, a *goquery.Selection) {
 				txt := strings.TrimSpace(a.Text())
-				if txt != "" {
+				if (txt != "" && txt != "Time") {
 					parts = append(parts, txt)
 				}
 			})
@@ -62,14 +79,13 @@ func Scraper(
 				return
 			}
 
-			// Create a pair of ingredients (order matters for Little Alchemy)
 			pair := util.Pair{
 				First: parts[0],
 				Second: parts[1],
 			}
 
-			// Append the result to the combinations map for this pair
 			combinations[pair] = append(combinations[pair], result)
+			revCombinations[result] = append(revCombinations[result], pair)
 
 			// Add both directions
 			if parts[0] != parts[1] {
@@ -78,6 +94,7 @@ func Scraper(
 					Second: parts[0],
 				}
 				combinations[reversedPair] = append(combinations[reversedPair], result)
+				revCombinations[result] = append(revCombinations[result], reversedPair)
 			}
 		})
 	})
@@ -95,6 +112,7 @@ func Scraper(
 				out = append(out, RecipeJSON{
 					Result:       result,
 					Combinations: pair,
+					Asset:				assetMap[result],
 				})
 			}
 		}
