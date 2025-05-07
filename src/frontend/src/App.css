@@ -21,71 +21,12 @@
   background-position: center top;
   background-repeat: repeat-y;
 }
-/* @media (max-width: 768px) {
-  .App {
-    background-image: url('./media/background.png');
-    background-size: cover;
-    background-position: top;
-  }
-} */
 
 .Home-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
-}
-
-.Home-title {
-  top: 42%;
-  left: 50%;
-  z-index: 1;
-  font-family: "Pyxxl";
-  font-size: calc(9px + 2vmin);
-  color: #f8f8f8;
-  transform: translate(-50%, -50%);
-  position: absolute;
-}
-@media (max-width: 768px) {
-  .Home-title {
-    font-size: calc(1px + 2vmin);
-    top: 50%;
-  }
-}
-.Home-title p {
-  margin: 0;
-  line-height: 2.4;
-  text-shadow: 
-  -7px -7px 0 #341E09,
-   7px -7px 0 #341E09,
-  -7px  7px 0 #341E09,
-   7px  7px 0 #341E09;
-}
-
-.Home-authors {
-  top: 53%;
-  left: 50%;
-  z-index: 1;
-  font-family: "Retro Gaming";
-  font-weight: 200;
-  font-size: calc(15px + 2vmin);
-  color: #f8f8f8;
-  transform: translate(-50%, -50%);
-  position: absolute;
-}
-.Home-authors p {
-  margin: 0;
-  text-shadow: 
-  -3px -3px 0 #341E09,
-   3px -3px 0 #341E09,
-  -3px  3px 0 #341E09,
-   3px  3px 0 #341E09;
-}
-@media (max-width: 768px) {
-  .Home-authors {
-    font-size: calc(2px + 2vmin);
-    top: 57%;
-  }
 }
 
 .Home-image-container {
@@ -124,35 +65,97 @@
   }
 }
 
-.Log {
+.Home-title {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-family: "Pyxxl";
+  font-size: calc(9px + 2vmin);
+  color: #f8f8f8;
+}
+@media (max-width: 768px) {
+  .Home-title {
+    font-size: calc(1px + 2vmin);
+    top: 50%;
+  }
+}
+.Home-title p {
+  margin: 0;
+  line-height: 2.4;
+  text-shadow: 
+    -7px -7px 0 #341E09,
+     7px -7px 0 #341E09,
+    -7px  7px 0 #341E09,
+     7px  7px 0 #341E09;
+}
+
+.Home-authors {
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-family: "Retro Gaming";
+  font-weight: 200;
+  font-size: calc(15px + 2vmin);
+  color: #f8f8f8;
+}
+@media (max-width: 768px) {
+  .Home-authors {
+    font-size: calc(2px + 2vmin);
+    top: 57%;
+  }
+}
+.Home-authors p {
+  margin: 0;
+  text-shadow: 
+    -3px -3px 0 #341E09,
+     3px -3px 0 #341E09,
+    -3px  3px 0 #341E09,
+     3px  3px 0 #341E09;
+}
+
+.Home-log-container {
   position: absolute;
   top: 62%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 70vmin;
+  height: auto;
   cursor: pointer;
+  z-index: 0;
+  text-decoration: none;
+}
+
+.Log {
+  width: 100%;
 }
 
 .Magnifier {
   position: absolute;
-  top: 62%;
-  left: 42%;
+  top: 50%;
+  left: 28%;
   transform: translate(-50%, -50%);
-  z-index: 0;
+  z-index: 1;
   width: 3.5vmin;
 }
 
 .Home-button-search {
-  top: 62%;
-  left: 51%;
-  z-index: 1;
+  position: absolute;
   font-family: "Retro Gaming";
   font-weight: 200;
   font-size: calc(10px + 2vmin);
   color: #E6D7C1;
+  z-index: 1;
+  top: 50%;
+  left: 53%;
   transform: translate(-50%, -50%);
-  position: absolute;
+  pointer-events: none;
 }
 
 .Home-button-others {
@@ -161,20 +164,20 @@
   flex-direction: row;
   top: 74%;
   left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
   font-family: "Retro Gaming";
   font-weight: 200;
   font-size: calc(10px + 2vmin);
   color: #E6D7C1;
-  transform: translate(-50%, -50%);
 }
 .Home-button-others p {
   margin: 0 30px;
   text-shadow: 
-  -2px -2px 0 #341E09,
-   2px -2px 0 #341E09,
-  -2px  2px 0 #341E09,
-   2px  2px 0 #341E09;
+    -2px -2px 0 #341E09,
+     2px -2px 0 #341E09,
+    -2px  2px 0 #341E09,
+     2px  2px 0 #341E09;
 }
 
 .Home-link-style {
@@ -209,17 +212,17 @@
   text-decoration: underline;
 }
 
-.About-container {
+.About-container, .Search-container, .Recipes-container, .Ingredients-container {
   position: relative;
   min-height: 100%;
   padding-top: 100px;
   padding-bottom: 100px;
 }
 
-.About-title {
+.About-title, .Search-title, .Recipes-title, .Ingredients-title {
   text-align: center;
   font-family: "Pyxxl";
-  font-size: calc(7px + 2vmin);
+  font-size: calc(6px + 2vmin);
   color: #f8f8f8;
   text-shadow: 
     -6px -6px 0 #341E09,
@@ -230,11 +233,45 @@
   margin-bottom: 30px;
 }
 
+.About-description {
+  color: white;
+  text-align: justify;
+  margin: 0 auto;
+  width: 65%;
+}
+
+.About-description p {
+  font-family: "Retro Gaming";
+  font-size: calc(3px + 2vmin);
+  text-shadow: 
+    -2px -2px 0 #341E09,
+     2px -2px 0 #341E09,
+    -2px  2px 0 #341E09,
+     2px  2px 0 #341E09;
+}
+
+.About-description a {
+  color: white;
+  text-decoration: underline; 
+}
+
+.About-description h2 {
+  font-family: "Pyxxl";
+  font-size: calc(6px + 1vmin);
+  text-shadow: 
+    -5px -5px 0 #341E09,
+     5px -5px 0 #341E09,
+    -5px  5px 0 #341E09,
+     5px  5px 0 #341E09;
+  margin-top: 60px;
+  margin-bottom: 20px;
+}
+
 .About-cards {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
+  gap: 30px;
 }
 
 .About-card {
@@ -246,7 +283,6 @@
 
 .About-avatar {
   height: 30vmin;
-  /* margin-right: 10px; */
 }
 
 .About-info {
@@ -277,4 +313,61 @@
      2px -2px 0 #341E09,
     -2px  2px 0 #341E09,
      2px  2px 0 #341E09;
+}
+
+.Search-form {
+  font-family: "Retro Gaming";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Search-form-card {
+  text-align: left;
+  width: 65%;
+}
+
+.Search-form h3 {
+  font-size: calc(7px + 2vmin);
+  color: #E6D7C1;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  text-shadow: 
+    -3px -3px 0 #341E09,
+     3px -3px 0 #341E09,
+    -3px  3px 0 #341E09,
+     3px  3px 0 #341E09;
+}
+
+.Search-form p {
+  font-size: calc(3px + 2vmin);
+  color: white;
+  text-shadow: 
+    -2px -2px 0 #341E09,
+     2px -2px 0 #341E09,
+    -2px  2px 0 #341E09,
+     2px  2px 0 #341E09;
+}
+
+.Search-form-card-radio {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  gap: 10px;
+}
+
+.Search-form-card-radio-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.Search-form-card-radio-3 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Search-form-card-radio p {
+  margin: 0;
 }
