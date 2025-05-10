@@ -8,7 +8,7 @@ const About = () => {
 
   return (
           <div className="Search-container">
-            <h1 className="Search-title">CARI&nbsp;&nbsp;RESEP</h1>
+            <h1 className="Search-title">CARI&nbsp;&nbsp;&nbsp;RESEP</h1>
             
               <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -17,7 +17,7 @@ const About = () => {
                     <h3>Nama Resep*</h3>
                     <input
                       type="text"
-                      placeholder=" "
+                      placeholder="Contoh: Babe the blue ox"
                       autoComplete='off'
                       className="custom-search-input"
                       {...register("Nama Resep", { required: true })}
@@ -28,7 +28,7 @@ const About = () => {
                     <h3>Jumlah Resep*</h3>
                     <input 
                       type="number"
-                      placeholder=" "
+                      placeholder="Contoh: 5"
                       className="custom-search-input"
                       {...register("Maksimal Resep", {required: true, min: 1})} />
                   </div>
