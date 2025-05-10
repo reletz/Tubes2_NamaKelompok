@@ -15,7 +15,6 @@ import (
 )
 type RecipeJSON struct {
 	Result       string      `json:"Result"`
-	Asset        string      `json:"Asset"`
 	Tier         int         `json:"Tier"`
 	Combinations []util.Pair `json:"Combinations"`
 }
@@ -71,7 +70,6 @@ func Scraper(
         log.Fatal("Failed to parse the HTML document:", err)
     }
 
-    assetMap := make(map[string]string)
     forbiddenElements := make(map[string]bool)
     mythsAndMonstersScraper(forbiddenElements)
 
@@ -79,92 +77,76 @@ func Scraper(
     // Parse the table and gather combinations
 
     doc.Find("h3, table.list-table.col-list.icon-hover tbody tr").Each(func(_ int, row *goquery.Selection) {
-        if row.Is("h3") {
-            currentTier = getTierNumber(strings.TrimSpace(row.Find("span.mw-headline").Text()))
-        } else if row.Is("table.list-table.col-list.icon-hover tbody tr") {
-            cols := row.Find("td")
-            if cols.Length() < 2 {
-                return
-            }
-            result := strings.TrimSpace(cols.Eq(0).Find("a").Text())
-            if result == "" || result == "Time" {
-                return
-            }
+        cols := row.Find("td")
+        if cols.Length() < 2 {
+            return
+        }
+        result := strings.TrimSpace(cols.Eq(0).Find("a").Text())
+        if result == "" || result == "Time" {
+            return
+        }
 
-            if forbiddenElements[result] {
-                return
-            }
+        if forbiddenElements[result] {
+            return
+        }
 
-            hrefVal, exists := cols.Eq(0).Find("span a").Attr("href")
-            asset := ""
-            if exists {
-                asset = strings.TrimSpace(hrefVal)
-            }
+        tierMap[result] = currentTier
 
-            if asset == "" {
-                // default aja
-                asset = "https://static.wikia.nocookie.net/little-alchemy/images/6/63/Time_2.svg/revision/latest?cb=20210827124225"
-            }
+        // Add result to ordered list if not seen before
+        if !seenResults[result] {
+            orderedRevCombinations.Order = append(orderedRevCombinations.Order, result)
+            seenResults[result] = true
+        }
 
-            assetMap[result] = asset
-            tierMap[result] = currentTier
-
-            // Add result to ordered list if not seen before
-            if !seenResults[result] {
-                orderedRevCombinations.Order = append(orderedRevCombinations.Order, result)
-                seenResults[result] = true
-            }
-
-            // Process combinations from the second column
-            cols.Eq(1).Find("li").Each(func(_ int, li *goquery.Selection) {
-                parts := []string{}
-                li.Find("a").Each(func(_ int, a *goquery.Selection) {
-                    txt := strings.TrimSpace(a.Text())
-                    if (txt != "" && txt != "Time") {
-                        parts = append(parts, txt)
-                    }
-                })
-                // Ensure we have two parts for a valid combination
-                if len(parts) != 2 {
-                    return
-                }
-
-                if forbiddenElements[parts[0]] || forbiddenElements[parts[1]] {
-                    return
-                }
-
-                pair := util.Pair{
-                    First: parts[0],
-                    Second: parts[1],
-                }
-
-                // Add pair to ordered list if not seen before
-                if !seenPairs[pair] {
-                    orderedCombinations.Order = append(orderedCombinations.Order, pair)
-                    seenPairs[pair] = true
-                }
-
-                combinations[pair] = append(combinations[pair], result)
-                revCombinations[result] = append(revCombinations[result], pair)
-
-                // Add both directions
-                if parts[0] != parts[1] {
-                    reversedPair := util.Pair{
-                        First: parts[1],
-                        Second: parts[0],
-                    }
-                    
-                    // Add reversed pair to ordered list if not seen before
-                    if !seenPairs[reversedPair] {
-                        orderedCombinations.Order = append(orderedCombinations.Order, reversedPair)
-                        seenPairs[reversedPair] = true
-                    }
-                    
-                    combinations[reversedPair] = append(combinations[reversedPair], result)
-                    revCombinations[result] = append(revCombinations[result], reversedPair)
+        // Process combinations from the second column
+        cols.Eq(1).Find("li").Each(func(_ int, li *goquery.Selection) {
+            parts := []string{}
+            li.Find("a").Each(func(_ int, a *goquery.Selection) {
+                txt := strings.TrimSpace(a.Text())
+                if (txt != "" && txt != "Time") {
+                    parts = append(parts, txt)
                 }
             })
-        }
+            // Ensure we have two parts for a valid combination
+            if len(parts) != 2 {
+                return
+            }
+
+            if forbiddenElements[parts[0]] || forbiddenElements[parts[1]] {
+                return
+            }
+
+            pair := util.Pair{
+                First: parts[0],
+                Second: parts[1],
+            }
+
+            // Add pair to ordered list if not seen before
+            if !seenPairs[pair] {
+                orderedCombinations.Order = append(orderedCombinations.Order, pair)
+                seenPairs[pair] = true
+            }
+
+            combinations[pair] = append(combinations[pair], result)
+            revCombinations[result] = append(revCombinations[result], pair)
+
+            // Add both directions
+            if parts[0] != parts[1] {
+                reversedPair := util.Pair{
+                    First: parts[1],
+                    Second: parts[0],
+                }
+                
+                // Add reversed pair to ordered list if not seen before
+                if !seenPairs[reversedPair] {
+                    orderedCombinations.Order = append(orderedCombinations.Order, reversedPair)
+                    seenPairs[reversedPair] = true
+                }
+                
+                combinations[reversedPair] = append(combinations[reversedPair], result)
+                revCombinations[result] = append(revCombinations[result], reversedPair)
+            }
+        })
     })
 
     // Sort the result list by tier for more deterministic output
@@ -194,7 +176,6 @@ func Scraper(
             out = append(out, RecipeJSON{
                 Result:       result,
                 Combinations: revCombinations[result],
-                Asset:        assetMap[result],
                 Tier:         tierMap[result],
             })
         }
