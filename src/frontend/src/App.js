@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-do
 import Home from './pages/Home';
 import About from './pages/About';
 import Search from './pages/Search';
-import Recipes from './pages/Recipes';
 import Ingredients from './pages/Ingredients';
 
 const App = () => {
@@ -25,7 +24,6 @@ const AppContent = () => {
         <nav className="Main-navbar">
           <Link to="/">BERANDA</Link>
           <Link to="/search">CARI RESEP</Link>
-          <Link to="/recipes">LIHAT RESEP</Link>
           <Link to="/ingredients">LIHAT BAHAN</Link>
           <Link to="/about">TENTANG KAMI</Link>
         </nav>
@@ -34,7 +32,6 @@ const AppContent = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/recipes" element={<Recipes />} />
         <Route path="/ingredients" element={<Ingredients />} />
       </Routes>
     </>

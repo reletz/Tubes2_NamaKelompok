@@ -324,13 +324,13 @@
 
 .Search-form-card {
   text-align: left;
-  width: 65%;
+  width: 45%;
 }
 
 .Search-form h3 {
   font-size: calc(7px + 2vmin);
   color: #E6D7C1;
-  margin-top: 25px;
+  margin-top: 15px;
   margin-bottom: 10px;
   text-shadow: 
     -3px -3px 0 #341E09,
@@ -359,7 +359,7 @@
 .Search-form-card-radio-2 {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
 }
 
 .Search-form-card-radio-3 {
@@ -370,4 +370,68 @@
 
 .Search-form-card-radio p {
   margin: 0;
+}
+
+.custom-search-input {
+  background-size: 100% 100%; 
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  width: 100%;
+  height: 50px;
+  padding: 0 40px 0 20px; /* padding kiri dan kanan untuk isi & icon */
+  font-family: "Retro Gaming";
+  font-size: 16px;
+  color: #341E09;
+  outline: none;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.custom-search-input {
+  background-image: url('./media/search-bar-2.png');
+
+}
+
+.custom-radio {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.custom-radio input[type="radio"] {
+  display: none; /* sembunyikan radio button asli */
+}
+
+.radio-image {
+  display: inline-block;
+  width: 24px;  /* sesuaikan dengan ukuran checkbox.png */
+  height: 24px;
+  background-image: url('./media/checkbox.png');
+  background-size: cover;
+}
+
+.custom-radio input[type="radio"]:checked + .radio-image {
+  background-image: url('./media/checkbox-checked.png');
+}
+
+.submit-button {
+  background-color: #E6D7C1;
+  color:  #341E09;
+  font-family: "Retro Gaming";
+  font-size: calc(3px + 2vmin);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.submit-button:active {
+  background-color: #E6D7C1;
+  color: #341E09;
+}
+.submit-button:hover {
+  background-color: #341E09;
+  color: #E6D7C1;
 }

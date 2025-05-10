@@ -37,7 +37,6 @@ const Home = () => {
       </div>
 
       <div className="Home-button-others">
-        <p><Link to="/recipes" className="Home-link-style">Lihat<br />Resep</Link></p>
         <p><Link to="/ingredients" className="Home-link-style">Lihat<br />Bahan</Link></p>
         <p><Link to="/about" className="Home-link-style">Tentang<br />Kami</Link></p>
       </div>
