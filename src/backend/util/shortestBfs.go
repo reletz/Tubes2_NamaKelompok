@@ -1,27 +1,10 @@
 package util
 
-import (
-	"fmt"
-	"os"
-	"encoding/json"
-)
-
 // Element nyatet dua bahan ("Source" dan "Partner") yang pertama kali
 // digabung buat bikin produk.
 // Source = bahan yang lagi kita proses (dikeluarin dari queue)
 // Partner = bahan lain (dari set yang udah dilihat) yang kita gabungin sama Source buat bikin produk.
-type Element struct {
-  Source, Partner string
-}
 
-type Pair struct {
-	First, Second string
-}
-
-type ResultJSON struct {
-	Name     string      `json:"name"`
-	Children interface{} `json:"children,omitempty"`
-}
 
 // Elemen dasar di Little Alchemy 2
 var BaseElements = []string{"Air", "Earth", "Fire", "Water"}
@@ -74,41 +57,4 @@ func ShortestBfs(target string, combinations map[Pair][]string) map[string]Eleme
 	// 7) Kembalikan map prev. Dari sini kita bisa bikin jalur resep:
 	//    mulai dari target, lihat prev[target], terus lihat prev[Source], dst.
 	return prev
-}
-
-// BuildTree nyusun pohon rekursif dari jalur resep
-func BuildTree(name string, prev map[string]Element) ResultJSON {
-	// Kalo gak ada Source, berarti ini elemen dasar (gak ada children)
-	if info, exists := prev[name]; exists {
-		// Rekursif nyusun pohon dari Source dan partner
-		return ResultJSON{
-			Name: name,
-			Children: []ResultJSON{
-				BuildTree(info.Source, prev),
-				BuildTree(info.Partner, prev),
-			},
-		}
-	}
-	// Kasus dasar (gak ada Source atau partner lebih lanjut)
-	return ResultJSON{
-		Name: name,
-	}
-}
-
-// SaveToJSON nyimpen struktur ke dalam file JSON
-func SaveToJSON(data ResultJSON, filename string) {
-	// Buat atau buka file
-	file, err := os.Create(filename)
-	if err != nil {
-		fmt.Println("Error bikin file:", err)
-		return
-	}
-	defer file.Close()
-
-	// Encode data ke JSON dengan indentasi
-	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", "  ")
-	if err := encoder.Encode(data); err != nil {
-		fmt.Println("Error encode data:", err)
-	}
 }

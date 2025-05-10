@@ -3,35 +3,35 @@ package main
 import (
 	"backend/scraper"
 	"backend/util"
-	"time"
 	"fmt"
+	"time"
 )
 
 func main(){
 	rawRecipe := make(map[util.Pair][]string)
 	reversedRawRecipe := make(map[string][]util.Pair)
-	scraper.Scraper(rawRecipe, reversedRawRecipe, true)
+	ingredientsTier := make(map[string]int)
+	scraper.Scraper(rawRecipe, ingredientsTier, reversedRawRecipe, true)
 	
-	target := "Human"
+	target := "Grilled cheese"
 
 	start1 := time.Now()
 	prev1 := util.ShortestBfs(target, rawRecipe)
-	fmt.Println(prev1["Acid rain"])
 	tree1 := util.BuildTree(target, prev1)
 	elapsed1 := time.Since(start1)
 
 	// Save the tree as JSON
-	fmt.Print(target + ", time taken: ")
+	fmt.Print("BFS for " + target + ", time taken: ")
 	fmt.Println(elapsed1)
 	util.SaveToJSON(tree1, "data/product_tree.json")
 
-
-	// start := time.Now()
-	// recipes := util.MultipleBfs(target, reversedRawRecipe, 3)
-	// path2 := util.ConvertPathsToTrees(recipes, rawRecipe)
-	// elapsed := time.Since(start)
+	start2 := time.Now()
+	recipes := util.ShortestDfs(target, reversedRawRecipe, ingredientsTier)
 	
-	// fmt.Printf("Found %d recipes for %s in %v\n", len(recipes), target, elapsed)
-	// util.SaveMultipleToJSON(path2, "data/awokawok.json")
+	tree2 := util.BuildTree(target, recipes)
+	elapsed2 := time.Since(start2)
 	
+	util.SaveToJSON(tree2, "data/product_tree2.json")
+	fmt.Print("DFS for " + target + ", time taken: ")
+	fmt.Println(elapsed2)
 }
