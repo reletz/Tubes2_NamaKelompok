@@ -1,9 +1,10 @@
 package util
 
 // BuildTree builds a tree from a recipe map iteratively to avoid stack overflow
-func BuildTree(element string, recipeMap map[string]Element) *Node {
+func BuildTree(element string, recipeMap map[string]Element) (*Node, int) {
   // Create a map to store nodes we've already built
   nodeMap := make(map[string]*Node)
+  visited := len(recipeMap)
   
   // Create nodes for base elements first
   for _, base := range []string{"Fire", "Water", "Air", "Earth"} {
@@ -62,7 +63,7 @@ func BuildTree(element string, recipeMap map[string]Element) *Node {
     currentNode.Children = append(currentNode.Children, nodeMap[recipe.Partner])
   }
   
-  return nodeMap[element]
+  return nodeMap[element], visited
 }
 
 // Helper function to check if an element is a base element

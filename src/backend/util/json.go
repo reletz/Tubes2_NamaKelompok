@@ -5,26 +5,37 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 )
 
-func ConvertToJSON(node *Node) ([]byte, error) {
-  jsonData, err := json.MarshalIndent(node, "", "  ")
+func ConvertToJSON(nodes []*Node, visited int, timetaken time.Duration) ([]byte, error) {
+  result := struct {
+    Recipes     []*Node       `json:"recipes"`
+    TimeTaken   string        `json:"timetaken"`
+    NodeVisited int           `json:"node_visited"`
+  }{
+    Recipes:     nodes,
+    TimeTaken:   timetaken.String(),
+    NodeVisited: visited,
+  }
+  
+  jsonData, err := json.MarshalIndent(result, "", "  ")
   if err != nil {
     return nil, fmt.Errorf("failed to marshal JSON: %v", err)
   }
   return jsonData, nil
 }
 
-// SaveToJSON saves a Node tree to a JSON file
-func SaveToJSON(node *Node, filename string) error {
+// SaveToJSON saves Node trees to a JSON file
+func SaveToJSON(nodes []*Node, filename string, visited int, timetaken time.Duration) error {
   // Create directory if it doesn't exist
   dir := filepath.Dir(filename)
   if err := os.MkdirAll(dir, 0755); err != nil {
     return fmt.Errorf("failed to create directory: %v", err)
   }
   
-  // Marshal the node to JSON
-  jsonData, err := ConvertToJSON(node)
+  // Marshal the nodes to JSON
+  jsonData, err := ConvertToJSON(nodes, visited, timetaken)
   if err != nil {
     return fmt.Errorf("failed to marshal JSON: %v", err)
   }
