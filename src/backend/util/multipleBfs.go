@@ -118,8 +118,14 @@ func MultipleBfs(target string, recipeMap map[Pair]string, maxRecipes int, tierM
 				}
 				
 				for _, pair := range pairs {
-					if product, exists := recipeMap[pair]; exists {
-						if _, seen := visitedElem.Load(product); !seen {
+					// Prevent duplicate pairs by only processing one order
+					if pair.First > pair.Second {
+						continue 
+					}
+					// Sends task to worker if the product hasn't been seen yet
+					if product, exists := recipeMap[pair]; exists {	
+						comboKey := pair.First + "+" + pair.Second + ">" + product
+						if _, seenCombo := visitedCombo.Load(comboKey); !seenCombo {
 							tasks <- levelTask{Pair: pair, Product: product}
 						}
 					}
@@ -136,8 +142,11 @@ func MultipleBfs(target string, recipeMap map[Pair]string, maxRecipes int, tierM
 
 		nextCount := 0
 		for res := range results {
-			existing.Store(res.Product, res.Node)
-			visitedElem.Store(res.Product, true)
+			_, existed := existing.Load(res.Product)
+			if !existed {
+				existing.Store(res.Product, res.Node)
+				visitedElem.Store(res.Product, true)
+			}
 			nextCount++
 			
 			if res.Product == target {
