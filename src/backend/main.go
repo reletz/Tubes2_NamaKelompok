@@ -8,7 +8,7 @@ import (
 )
 
 func main(){
-	rawRecipe := make(map[util.Pair][]string)
+	rawRecipe := make(map[util.Pair]string)
 	reversedRawRecipe := make(map[string][]util.Pair)
 	ingredientsTier := make(map[string]int)
 	scraper.Scraper(rawRecipe, ingredientsTier, reversedRawRecipe, true)
@@ -33,12 +33,12 @@ func main(){
 	fmt.Println(elapsed2)
 	util.SaveToJSON([]*util.Node{tree2}, "data/product_tree2.json", visited, time.Since(start2))
 	
-	// // MultipleBFS demonstration
-	// start3 := time.Now()
-	// multiBfsResult, _ := util.MultipleBfs(target, reversedRawRecipe, 10, ingredientsTier)
-	// elapsed3 := time.Since(start3)
-	// util.SaveToJSON(multiBfsResult.Trees, "data/multi_bfs_results.json", multiBfsResult.VisitedNodes, elapsed3)
-	// fmt.Println(len(multiBfsResult.Trees))
+	// MultipleBFS demonstration
+	start3 := time.Now()
+	multiBfsResult, _ := util.MultipleBfs(target, rawRecipe, 10, ingredientsTier)
+	elapsed3 := time.Since(start3)
+	util.SaveToJSON(multiBfsResult.Trees, "data/multi_bfs_results.json", multiBfsResult.VisitedNodes, elapsed3)
+	fmt.Println(len(multiBfsResult.Trees))
 	
 	// // MultipleDFS demonstration
 	// start4 := time.Now()
