@@ -436,7 +436,7 @@
   color: #E6D7C1;
 }
 
-.Ingredients-subtitle {
+.Ingredients-subtitle, .Search-subtitle {
   text-align: center;
   font-family: "Retro Gaming";
   color: white;
@@ -488,4 +488,20 @@
   height: 64px;
   margin-bottom: 10px;
   object-fit: contain;
+}
+
+.tree-node {
+  background-color: #8B4513;
+  color: white;
+  border-radius: 10px;
+  font-family: "Retro Gaming";
+  text-align: center;
+  padding: auto;
+  font-size: 15px;
+  border: 2px solid #341E09;
+}
+
+.leaf-node {
+  background-color: #E6D7C1;
+  color: black;
 }

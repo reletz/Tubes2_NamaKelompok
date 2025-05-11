@@ -1,8 +1,8 @@
 import React from 'react';
 import tavernSign from '../media/tavern-sign.png';
 import logoAndHeads from '../media/logo-and-heads.png';
-import log from '../media/log.png';
-import logLight from '../media/log-light.png';
+import log from '../media/Log.png';
+import logLight from '../media/Log-light.png';
 import magnifier from '../media/magnifier.png';
 import '../App.css';
 import { Link } from 'react-router-dom';

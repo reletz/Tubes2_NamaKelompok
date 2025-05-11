@@ -1,0 +1,26 @@
+{
+  "name": "cheese",
+  "children": [
+    {
+      "name": "cheddar",
+      "children": [
+        { "name": "mature cheddar" },
+        { "name": "extra mature cheddar" }
+      ]
+    },
+    {
+      "name": "brie",
+      "children": [
+        { "name": "camembert" },
+        { "name": "double cream brie" }
+      ]
+    },
+    {
+      "name": "blue cheese",
+      "children": [
+        { "name": "stilton" },
+        { "name": "roquefort" }
+      ]
+    }
+  ]
+}
