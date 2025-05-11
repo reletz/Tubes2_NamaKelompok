@@ -40,10 +40,18 @@ func main(){
 	util.SaveToJSON(multiBfsResult.Trees, "data/multi_bfs_results.json", multiBfsResult.VisitedNodes, elapsed3)
 	fmt.Println(len(multiBfsResult.Trees))
 	
-	// // MultipleDFS demonstration
-	// start4 := time.Now()
-	// multiDfsResult, _ := util.MultipleDfs(target, reversedRawRecipe, 10, ingredientsTier)
-	// elapsed4 := time.Since(start4)
-	// util.SaveToJSON(multiDfsResult.Trees, "data/multi_dfs_results.json", multiDfsResult.VisitedNodes, elapsed4)
-	// fmt.Println(len(multiDfsResult.Trees))
+	// MultipleDFS demonstration
+	start4 := time.Now()
+	multiDfsResult := util.MultipleDfs(target, reversedRawRecipe, ingredientsTier, 10)
+	elapsed4 := time.Since(start4)
+	tree4, visited := util.BuildMultipleTrees(target, multiDfsResult)
+	util.SaveToJSON(tree4, "data/multi_dfs_results.json", visited, elapsed4)
+	fmt.Println(len(multiDfsResult.Recipes))
+
+	start5 := time.Now()
+	multicDfsResult := util.MultipleParallelDfs(target, reversedRawRecipe, ingredientsTier, 10, 10)
+	elapsed5 := time.Since(start5)
+	tree5, visited := util.BuildMultipleTrees(target, multicDfsResult)
+	util.SaveToJSON(tree5, "data/multi_dfs_results2.json", visited, elapsed5)
+	fmt.Println(len(multicDfsResult.Recipes))
 }
