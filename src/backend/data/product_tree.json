@@ -13,34 +13,18 @@
                   "name": "Continent",
                   "children": [
                     {
+                      "name": "Earth"
+                    },
+                    {
                       "name": "Land",
                       "children": [
                         {
                           "name": "Earth"
                         },
                         {
-                          "name": "Stone",
-                          "children": [
-                            {
-                              "name": "Earth"
-                            },
-                            {
-                              "name": "Pressure",
-                              "children": [
-                                {
-                                  "name": "Air"
-                                },
-                                {
-                                  "name": "Air"
-                                }
-                              ]
-                            }
-                          ]
+                          "name": "Earth"
                         }
                       ]
-                    },
-                    {
-                      "name": "Earth"
                     }
                   ]
                 },
@@ -48,34 +32,18 @@
                   "name": "Continent",
                   "children": [
                     {
+                      "name": "Earth"
+                    },
+                    {
                       "name": "Land",
                       "children": [
                         {
                           "name": "Earth"
                         },
                         {
-                          "name": "Stone",
-                          "children": [
-                            {
-                              "name": "Earth"
-                            },
-                            {
-                              "name": "Pressure",
-                              "children": [
-                                {
-                                  "name": "Air"
-                                },
-                                {
-                                  "name": "Air"
-                                }
-                              ]
-                            }
-                          ]
+                          "name": "Earth"
                         }
                       ]
-                    },
-                    {
-                      "name": "Earth"
                     }
                   ]
                 }
@@ -100,6 +68,6 @@
       ]
     }
   ],
-  "timetaken": "514.6µs",
-  "node_visited": 133
+  "timetaken": "1.0409ms",
+  "node_visited": 127
 }
