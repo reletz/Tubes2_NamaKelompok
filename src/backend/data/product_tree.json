@@ -55,19 +55,11 @@
           ]
         },
         {
-          "name": "Mist",
-          "children": [
-            {
-              "name": "Air"
-            },
-            {
-              "name": "Water"
-            }
-          ]
+          "name": "Water"
         }
       ]
     }
   ],
-  "timetaken": "1.0409ms",
-  "node_visited": 127
+  "timetaken": "523.3µs",
+  "node_visited": 119
 }

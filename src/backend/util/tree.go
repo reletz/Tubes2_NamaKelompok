@@ -66,6 +66,20 @@ func BuildTree(element string, recipeMap map[string]Element) (*Node, int) {
   return nodeMap[element], visited
 }
 
+// BuildMultipleTrees builds trees for each recipe in MultipleRecipesResult
+func BuildMultipleTrees(element string, result MultipleRecipesResult) ([]*Node, int) {
+  var trees []*Node
+  
+  // Build a tree for each recipe
+  for _, recipe := range result.Recipes {
+    tree, _ := BuildTree(element, recipe)
+    trees = append(trees, tree)
+  }
+  
+  // Return the trees and the NodeCount from the result
+  return trees, result.NodeCount
+}
+
 // Helper function to check if an element is a base element
 func isBaseElement(element string) bool {
 	baseElements := map[string]bool{
