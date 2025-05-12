@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Tree from 'react-d3-tree';
 import { parseMultipleTrees, parseMetaInfo } from './parseTree';
@@ -6,10 +6,10 @@ import rawTree from '../data/multi_dfs_results.json';
 
 const About = () => {
   const { register, handleSubmit } = useForm();
-  const [treeDataList, setTreeDataList] = React.useState([]);
-  const [metaInfo, setMetaInfo] = React.useState({ timetaken: "-", node_visited: 0 });
-  const treeContainerRef = React.useRef(null);
-  const [containerWidth, setContainerWidth] = React.useState(0);
+  const [treeDataList, setTreeDataList] = useState([]);
+  const [metaInfo, setMetaInfo] = useState({ timetaken: "-", node_visited: 0 });
+  const treeContainerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(0);
 
   const onSubmit = (querySearch) => {
     console.log(querySearch);
@@ -19,7 +19,7 @@ const About = () => {
     setMetaInfo(info);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (treeContainerRef.current) {
       setContainerWidth(treeContainerRef.current.offsetWidth);
     }
