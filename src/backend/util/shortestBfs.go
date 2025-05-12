@@ -5,7 +5,6 @@ package util
 // Source = bahan yang lagi kita proses (dikeluarin dari queue)
 // Partner = bahan lain (dari set yang udah dilihat) yang kita gabungin sama Source buat bikin produk.
 
-
 // Elemen dasar di Little Alchemy 2
 var BaseElements = []string{"Air", "Earth", "Fire", "Water"}
 
@@ -13,7 +12,7 @@ var BaseElements = []string{"Air", "Earth", "Fire", "Water"}
 // sampai nemuin target (atau habis opsi). Hasilnya adalah map
 // dari produk ke Element (siapa Source & Partner yang ngasilin itu),
 // jadi kita bisa nyusun lagi jalur resepnya nanti.
-func ShortestBfs(target string, combinations map[Pair][]string) map[string]Element {
+func ShortestBfs(target string, combinations map[Pair]string) map[string]Element {
 	// 1) Siapin queue yang berisi elemen dasar
 	queue := make([]string, len(BaseElements))
 	copy(queue, BaseElements)
@@ -40,8 +39,9 @@ func ShortestBfs(target string, combinations map[Pair][]string) map[string]Eleme
 		// 5) Untuk tiap bahan "partner" yang udah kita lihat,
 		//    coba gabungin current + partner, pake combinations[pair] -> produk
 		for partner := range seen {
-			// Cari produk apa aja yang bisa dibikin dengan Pair{A: current, B: partner}
-			for _, product := range combinations[Pair{First: current, Second: partner}] {
+			// Cari produk yang bisa dibikin dengan Pair{A: current, B: partner}
+			pair := Pair{First: current, Second: partner}
+			if product, exists := combinations[pair]; exists {
 				// 6) Kalo produk baru (belum pernah dilihat), tandai dan masukin queue
 				if !seen[product] {
 					seen[product] = true
