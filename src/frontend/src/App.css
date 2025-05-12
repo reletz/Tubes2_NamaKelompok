@@ -408,12 +408,12 @@
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url('./media/checkbox.png');
+  background-image: url('./media/checkbox.svg');
   background-size: cover;
 }
 
 .custom-radio input[type="radio"]:checked + .radio-image {
-  background-image: url('./media/checkbox-checked.png');
+  background-image: url('./media/checkbox-checked.svg');
 }
 
 .submit-button {
