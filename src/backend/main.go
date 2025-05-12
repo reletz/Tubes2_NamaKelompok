@@ -54,4 +54,11 @@ func main(){
 	tree5, visited := util.BuildMultipleTrees(target, multicDfsResult)
 	util.SaveToJSON(tree5, "data/multi_dfs_results2.json", visited, elapsed5)
 	fmt.Println(len(multicDfsResult.Recipes))
+
+	start6 := time.Now()
+	multic1DfsResult := util.OptimizedParallelDfs(target, reversedRawRecipe, ingredientsTier, 80, 10)
+	elapsed6 := time.Since(start6)
+	tree6, visited := util.BuildMultipleTrees(target, multic1DfsResult)
+	util.SaveToJSON(tree6, "data/multi_dfs_results3.json", visited, elapsed6)
+	fmt.Println(len(multic1DfsResult.Recipes))
 }

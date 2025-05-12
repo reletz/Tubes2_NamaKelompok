@@ -1,5 +1,7 @@
 package util
 
+var BaseElements = []string{"Air", "Earth", "Fire", "Water"}
+
 // BuildTree builds a tree from a recipe map iteratively to avoid stack overflow
 func BuildTree(element string, recipeMap map[string]Element) (*Node, int) {
   // Create a map to store nodes we've already built
@@ -7,7 +9,7 @@ func BuildTree(element string, recipeMap map[string]Element) (*Node, int) {
   visited := len(recipeMap)
   
   // Create nodes for base elements first
-  for _, base := range []string{"Fire", "Water", "Air", "Earth"} {
+  for _, base := range BaseElements {
     nodeMap[base] = &Node{Name: base}
   }
   
@@ -82,11 +84,11 @@ func BuildMultipleTrees(element string, result MultipleRecipesResult) ([]*Node, 
 
 // Helper function to check if an element is a base element
 func isBaseElement(element string) bool {
-	baseElements := map[string]bool{
+	BaseElements := map[string]bool{
 		"Fire": true,
 		"Water": true,
 		"Air": true,
 		"Earth": true,
 	}
-	return baseElements[element]
+	return BaseElements[element]
 }

@@ -21,8 +21,7 @@ func ShortestDfs(target string, revCombinations map[string][]Pair, tierMap map[s
   nodeStates := make(map[string]*NodeState)
   
   // Add base elements to node states with visited=true
-  baseElements := []string{"Fire", "Water", "Air", "Earth"}
-  for _, elem := range baseElements {
+  for _, elem := range BaseElements {
     nodeStates[elem] = &NodeState{Visited: true}
     result[elem] = Element{} // Mark base elements with empty recipes
   }

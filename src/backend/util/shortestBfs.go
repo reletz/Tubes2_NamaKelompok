@@ -5,9 +5,6 @@ package util
 // Source = bahan yang lagi kita proses (dikeluarin dari queue)
 // Partner = bahan lain (dari set yang udah dilihat) yang kita gabungin sama Source buat bikin produk.
 
-// Elemen dasar di Little Alchemy 2
-var BaseElements = []string{"Air", "Earth", "Fire", "Water"}
-
 // ShortestBfs jalanin BFS mulai dari elemen dasar
 // sampai nemuin target (atau habis opsi). Hasilnya adalah map
 // dari produk ke Element (siapa Source & Partner yang ngasilin itu),
