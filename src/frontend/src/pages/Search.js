@@ -1,8 +1,6 @@
 import { React, useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Tree from 'react-d3-tree';
-import { parseMultipleTrees, parseMetaInfo } from './parseTree';
-import rawTree from '../data/multi_dfs_results.json';
 
 const About = () => {
   const { register, handleSubmit } = useForm();
@@ -11,12 +9,31 @@ const About = () => {
   const treeContainerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(0);
 
-  const onSubmit = (querySearch) => {
-    console.log(querySearch);
-    const trees = parseMultipleTrees(rawTree);
-    const info = parseMetaInfo(rawTree);
-    setTreeDataList(trees);
-    setMetaInfo(info);
+  const onSubmit = async (querySearch) => {
+    querySearch.maksimalResep = Number(querySearch.maksimalResep);
+    console.log("Kirim ke backend:", querySearch); // debug di console (liat inspect)
+
+    try {
+      const response = await fetch("http://localhost:8080/api/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(querySearch),
+      });
+
+      const data = await response.json();
+
+      if (data.treeData && Array.isArray(data.treeData)) {
+        setTreeDataList(data.treeData);
+        setMetaInfo({
+          timetaken: data.timetaken || "-",
+          node_visited: data.node_visited || 0,
+        });
+      } else {
+        console.error("Unexpected API response format:", data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch:", err);
+    }
   };
 
   useEffect(() => {
@@ -72,7 +89,7 @@ const About = () => {
               placeholder="Contoh: Babe the blue ox"
               autoComplete="off"
               className="custom-search-input"
-              {...register("Nama Resep", { required: true })}
+              {...register("namaResep", { required: true })}
             />
           </div>
 
@@ -82,7 +99,7 @@ const About = () => {
               type="number"
               placeholder="Contoh: 5"
               className="custom-search-input"
-              {...register("Maksimal Resep", { required: true, min: 1 })}
+              {...register("maksimalResep", { required: true, min: 1 })}
             />
           </div>
 
@@ -93,7 +110,7 @@ const About = () => {
                 <label className="custom-radio">
                   <input
                     type="radio"
-                    {...register("Algoritma", { required: true })}
+                    {...register("algoritma", { required: true })}
                     value="BFS"
                   />
                   <span className="radio-image" />
@@ -102,7 +119,7 @@ const About = () => {
                 <label className="custom-radio">
                   <input
                     type="radio"
-                    {...register("Algoritma", { required: true })}
+                    {...register("algoritma", { required: true })}
                     value="DFS"
                   />
                   <span className="radio-image" />
