@@ -31,7 +31,7 @@ const About = () => {
             <h3>Nama Bahan</h3>
             <input
               type="text"
-              placeholder="Contoh: Babe the blue ox"
+              placeholder="Contoh: Brick, Cloud"
               autoComplete="off"
               className="custom-search-input"
 
