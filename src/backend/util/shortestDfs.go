@@ -113,16 +113,16 @@ func ShortestDfs(target string, revCombinations map[string][]Pair, tierMap map[s
 
 // Improved filterValidPairs to prioritize lower tier ingredients
 func filterValidPairs(pairs []Pair, element string, tierMap map[string]int) []Pair {
-	currentTier := tierMap[element]
-	var validPairs []Pair
-	
-	for _, pair := range pairs {
-		// Only consider pairs where both ingredients are from lower tier
-		// This prevents using equal or higher tier elements to create lower tier ones
-		if tierMap[pair.First] < currentTier && tierMap[pair.Second] < currentTier {
-			validPairs = append(validPairs, pair)
-		}
-	}
-	
-	return validPairs
+    currentTier := tierMap[element]
+    var validPairs []Pair
+    
+    for _, pair := range pairs {
+        // Only consider pairs where both ingredients are from lower tier
+        // This prevents using equal or higher tier elements to create lower tier ones
+        if tierMap[pair.First] < currentTier && tierMap[pair.Second] < currentTier {
+            validPairs = append(validPairs, pair)
+        }
+    }
+    
+    return validPairs
 }
