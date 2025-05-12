@@ -17,7 +17,7 @@ func main(){
 
 	// Standard BFS
 	start1 := time.Now()
-	prev1 := util.ShortestBfs(target, rawRecipe)
+	prev1 := util.ShortestBfsFiltered(target, rawRecipe, ingredientsTier)
 	tree1, visited := util.BuildTree(target, prev1)
 	elapsed1 := time.Since(start1)
 	fmt.Print("BFS for " + target + ", time taken: ")
@@ -35,30 +35,39 @@ func main(){
 	
 	// MultipleBFS demonstration
 	start3 := time.Now()
-	multiBfsResult, _ := util.MultipleBfs(target, rawRecipe, 10, ingredientsTier)
+	multiBfsResult := util.MultipleBfs(target, rawRecipe, reversedRawRecipe, ingredientsTier, 10)
+	tree3, visited := util.BuildMultipleTrees(target, multiBfsResult)
 	elapsed3 := time.Since(start3)
-	util.SaveToJSON(multiBfsResult.Trees, "data/multi_bfs_results.json", multiBfsResult.VisitedNodes, elapsed3)
-	fmt.Println(len(multiBfsResult.Trees))
+	util.SaveToJSON(tree3, "data/multi_bfs_results.json", visited, elapsed3)
+	fmt.Println(len(multiBfsResult.Recipes))
+
+	// MultipleBFS demonstration
+	start8 := time.Now()
+	multiBfsResult8 := util.OptimizedParallelBFS(target, rawRecipe, reversedRawRecipe, ingredientsTier, 10, 4)
+	tree8, visited := util.BuildMultipleTrees(target, multiBfsResult8)
+	elapsed8 := time.Since(start8)
+	util.SaveToJSON(tree8, "data/multi_bfs_results_optimize.json", visited, elapsed8)
+	fmt.Println(len(multiBfsResult.Recipes))
 	
 	// MultipleDFS demonstration
 	start4 := time.Now()
-	multiDfsResult := util.MultipleDfs(target, reversedRawRecipe, ingredientsTier, 80)
+	multiDfsResult := util.MultipleDfs(target, reversedRawRecipe, ingredientsTier, 10)
 	elapsed4 := time.Since(start4)
 	tree4, visited := util.BuildMultipleTrees(target, multiDfsResult)
 	util.SaveToJSON(tree4, "data/multi_dfs_results.json", visited, elapsed4)
 	fmt.Println(len(multiDfsResult.Recipes))
 
 	start5 := time.Now()
-	multicDfsResult := util.MultipleParallelDfs(target, reversedRawRecipe, ingredientsTier, 80, 10)
+	multicDfsResult := util.MultipleParallelDfs(target, reversedRawRecipe, ingredientsTier, 10, 8)
 	elapsed5 := time.Since(start5)
 	tree5, visited := util.BuildMultipleTrees(target, multicDfsResult)
-	util.SaveToJSON(tree5, "data/multi_dfs_results2.json", visited, elapsed5)
+	util.SaveToJSON(tree5, "data/multi_dfs_results_parallel.json", visited, elapsed5)
 	fmt.Println(len(multicDfsResult.Recipes))
 
 	start6 := time.Now()
-	multic1DfsResult := util.OptimizedParallelDfs(target, reversedRawRecipe, ingredientsTier, 80, 10)
+	multic1DfsResult := util.OptimizedParallelDfs(target, reversedRawRecipe, ingredientsTier, 10, 4)
 	elapsed6 := time.Since(start6)
 	tree6, visited := util.BuildMultipleTrees(target, multic1DfsResult)
-	util.SaveToJSON(tree6, "data/multi_dfs_results3.json", visited, elapsed6)
+	util.SaveToJSON(tree6, "data/multi_dfs_results_optimize.json", visited, elapsed6)
 	fmt.Println(len(multic1DfsResult.Recipes))
 }

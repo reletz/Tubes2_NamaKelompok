@@ -1,6 +1,6 @@
 package util
 
-// NodeState tracks the exploration state for each element
+// NodeState buat ngetracking status eksplorasi tiap elemen
 type NodeState struct {
 	CurrentPairIndex int
 	Pairs            []Pair
@@ -9,49 +9,49 @@ type NodeState struct {
 }
 
 func ShortestDfs(target string, revCombinations map[string][]Pair, tierMap map[string]int) map[string]Element {
-  // Initialize result map: element -> its recipe
+  // Inisialisasi map hasil: elemen -> resepnya
   result := make(map[string]Element)
   
-  // Check if the target exists in the combinations
+  // Cek apakah target ada di kombinasi
   if _, exists := revCombinations[target]; !exists {
     return result
   }
   
-  // Map to track exploration state for each element
+  // Map buat ngetracking status eksplorasi tiap elemen
   nodeStates := make(map[string]*NodeState)
   
-  // Add base elements to node states with visited=true
+  // Tambahin elemen dasar ke node states dengan visited=true
   for _, elem := range BaseElements {
     nodeStates[elem] = &NodeState{Visited: true}
-    result[elem] = Element{} // Mark base elements with empty recipes
+    result[elem] = Element{} // Tandain elemen dasar dengan resep kosong
   }
   
-  // Track the elements that we're currently trying to resolve
+  // Tracking elemen yang lagi kita coba resolve
   inProgress := make(map[string]bool)
   
-  // Use a recursive helper function for DFS
+  // Pake fungsi rekursif sebagai helper buat DFS
   var explore func(element string) bool
   explore = func(element string) bool {
-    // Base elements are already solved
+    // Elemen dasar udah selesai
     if isBaseElement(element) {
       return true
     }
     
-    // Skip if we've already found a solution for this element
+    // Skip kalo kita udah nemu solusi buat elemen ini
     if state := nodeStates[element]; state != nil && state.Visited {
       return true
     }
     
-    // Detect cycles - if we're already trying to resolve this element in the current path
+    // Deteksi siklus - kalo kita udah coba resolve elemen ini di jalur saat ini
     if inProgress[element] {
       return false
     }
     
-    // Mark as in progress
+    // Tandain sebagai sedang diproses
     inProgress[element] = true
     defer func() { inProgress[element] = false }()
     
-    // Get or create node state
+    // Ambil atau bikin state node
     state := nodeStates[element]
     if state == nil {
       pairs := revCombinations[element]
@@ -65,42 +65,42 @@ func ShortestDfs(target string, revCombinations map[string][]Pair, tierMap map[s
       nodeStates[element] = state
     }
     
-    // Try each valid recipe
+    // Coba tiap resep yang valid
     for i := 0; i < len(state.ValidPairs); i++ {
       pair := state.ValidPairs[i]
       
-      // Record this recipe tentatively
+      // Catat resep ini sementara
       result[element] = Element{
         Source:  pair.First,
         Partner: pair.Second,
       }
       
-      // Try to resolve both ingredients
+      // Coba resolve kedua bahan
       firstResolved := isBaseElement(pair.First) || explore(pair.First)
       if !firstResolved {
-        continue // Try next recipe if first ingredient can't be resolved
+        continue // Coba resep berikutnya kalo bahan pertama gak bisa diresolved
       }
       
       secondResolved := isBaseElement(pair.Second) || explore(pair.Second)
       if !secondResolved {
-        continue // Try next recipe if second ingredient can't be resolved
+        continue // Coba resep berikutnya kalo bahan kedua gak bisa diresolved
       }
       
-      // Both ingredients resolved - we found a valid recipe
+      // Kedua bahan resolved - kita nemu resep valid
       state.Visited = true
-      state.CurrentPairIndex = i + 1 // Remember which recipe we used
+      state.CurrentPairIndex = i + 1 // Inget resep mana yang kita pake
       return true
     }
     
-    // If we get here, no valid recipe was found
-    delete(result, element) // Remove any tentative recipe
+    // Kalo sampe sini, gak ada resep valid yang ketemu
+    delete(result, element) // Hapus resep sementara
     return false
   }
   
-  // Start exploration from the target
+  // Mulai eksplorasi dari target
   explore(target)
   
-  // Clean up the result map - remove any entries with empty recipes that aren't base elements
+  // Bersihin map hasil - hapus entri dengan resep kosong yang bukan elemen dasar
   for key, elem := range result {
     if !isBaseElement(key) && (elem.Source == "" || elem.Partner == "") {
       delete(result, key)

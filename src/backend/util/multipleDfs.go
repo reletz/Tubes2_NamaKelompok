@@ -1,11 +1,5 @@
 package util
 
-// MultipleRecipesResult buat nyimpen hasil dari MultipleRecipesDfs
-type MultipleRecipesResult struct {
-  Recipes   []map[string]Element // Kumpulan resep yang valid
-  NodeCount int                  // Jumlah node/elemen yang dikunjungi
-}
-
 // MultipleDfs nyari beberapa resep valid buat elemen target dengan cara:
 // 1. Nyari resep valid yang pertama
 // 2. Backtracking lewat pohon resep buat nemuin variasi lain

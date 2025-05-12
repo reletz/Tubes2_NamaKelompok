@@ -1,191 +1,160 @@
 package util
 
-import (
-	"runtime"
-	"sync"
-)
+// MultipleBfs nyari beberapa resep valid buat elemen target dengan cara:
+// 1. Nyari resep valid yang pertama dengan BFS
+// 2. Mengeksplorasi alternatif resep secara melebar (BFS) untuk menemukan variasi lain
+// 3. Mencari variasi bukan hanya di level teratas, tapi juga komponen-komponen di dalamnya
+func MultipleBfs(target string, combinations map[Pair]string, revCombinations map[string][]Pair, tierMap map[string]int, maxRecipes int) MultipleRecipesResult {
+  // Pertama, cari resep awal pake ShortestBfsFiltered
+  firstRecipe := ShortestBfsFiltered(target, combinations, tierMap)
+  
+  // Pantau semua elemen yang udah dikunjungi
+  visited := make(map[string]bool)
+  
+  // Masukin elemen dasar ke visited
+  for _, elem := range BaseElements {
+    visited[elem] = true
+  }
+  
+  // Kalo gak nemu resep awal, yaudah return hasil kosong
+  if len(firstRecipe) == 0 {
+    return MultipleRecipesResult{
+      Recipes:   []map[string]Element{},
+      NodeCount: len(visited),
+    }
+  }
+  
+  // Kumpulan resep, mulai dari resep pertama
+  recipes := []map[string]Element{firstRecipe}
+  
+  // Catat elemen di resep untuk ngukur berapa node yang dikunjungi
+  for elem := range firstRecipe {
+    visited[elem] = true
+  }
 
-// MultiTreeResult stores the result of multiple recipe trees
-type MultiTreeResult struct {
-	Trees        []*Node  `json:"recipes"`
-	VisitedNodes int      `json:"node_visited"`
-}
-
-// Menyimpan task kombinasi 
-type levelTask struct {
-	Pair    Pair
-	Product string
-}
-
-// Menyimpan result dari task yang berhasil
-type levelResult struct {
-	Product string
-	Node    *Node
-}
-
-// MultiBFS finds multiple recipes for a target element using breadth-first search
-func MultipleBfs(target string, recipeMap map[Pair]string, maxRecipes int, tierMap map[string]int) (MultiTreeResult, error) {
-	startingElements := BaseElements
-	existing := sync.Map{}
-	visitedCombo := sync.Map{}
-	visitedElem := sync.Map{}
-
-	// Inisialisasi dari starting element
-	for _, e := range startingElements {
-		existing.Store(e, &Node{Name: e, Children: []*Node{}})
-		visitedElem.Store(e, true)
-	}
-
-	// Cek target starting element apa bukan
-	for _, e := range startingElements {
-		if e == target {
-			n := &Node{Name: e, Children: []*Node{}}
-			return MultiTreeResult{
-				Trees:        []*Node{n},
-				VisitedNodes: 1,
-			}, nil
-		}
-	}
-
-	foundRecipes := []*Node{}
-	tier := 0
-	numWorkers := runtime.NumCPU() * 2
-
-	// Proses Multiple BFS
-	for len(foundRecipes) < maxRecipes {
-		tasks := make(chan levelTask, 1000)
-		results := make(chan levelResult, 1000)
-		var wg sync.WaitGroup
-
-		// Worker pool multithreading
-		for i := 0; i < numWorkers; i++ {
-			wg.Add(1)
-			go func(id int) {
-				defer wg.Done()
-				for task := range tasks {
-					pair := task.Pair
-					product := task.Product
-
-					// Pengecekan untuk resep harus di bawah elemen yang akan dibentuk
-					productTier := tierMap[product]
-					valid := true
-					// Check both ingredients from the Pair
-					first, second := pair.First, pair.Second
-					if tierMap[first] >= productTier || tierMap[second] >= productTier {
-						valid = false
-					}
-					if !valid {
-						continue
-					}
-
-					// Pengecekan elemen dari recipe
-					n1Raw, ok1 := existing.Load(first)
-					n2Raw, ok2 := existing.Load(second)
-					if !ok1 || !ok2 {
-						continue
-					}
-
-					// Menghindari duplikasi kalo ada kombinasi yang sama
-					comboKey := first + "+" + second + ">" + product
-					if _, dup := visitedCombo.LoadOrStore(comboKey, true); dup {
-						continue
-					}
-
-					newNode := &Node{Name: product, Children: []*Node{n1Raw.(*Node), n2Raw.(*Node)}}
-					results <- levelResult{Product: product, Node: newNode}
-				}
-			}(i)
-		}
-
-		// Mengirim semua kombinasi ke worker
-		// Cari semua kombinasi pasangan elemen yang ada
-		var existingElements []string
-		visitedElem.Range(func(key, _ interface{}) bool {
-			existingElements = append(existingElements, key.(string))
-			return true
-		})
-
-		// Generate all possible combinations of elements we've seen
-		for i := 0; i < len(existingElements); i++ {
-			for j := i; j < len(existingElements); j++ {
-				first := existingElements[i]
-				second := existingElements[j]
-				
-				// Try pair in both orders
-				pairs := []Pair{
-					{First: first, Second: second},
-					{First: second, Second: first},
-				}
-				
-				for _, pair := range pairs {
-					// Prevent duplicate pairs by only processing one order
-					if pair.First > pair.Second {
-						continue 
-					}
-					// Sends task to worker if the product hasn't been seen yet
-					if product, exists := recipeMap[pair]; exists {	
-						comboKey := pair.First + "+" + pair.Second + ">" + product
-						if _, seenCombo := visitedCombo.Load(comboKey); !seenCombo {
-							tasks <- levelTask{Pair: pair, Product: product}
-						}
-					}
-				}
-			}
-		}
-		
-		close(tasks)
-
-		go func() {
-			wg.Wait()
-			close(results)
-		}()
-
-		nextCount := 0
-		for res := range results {
-			_, existed := existing.Load(res.Product)
-			if !existed {
-				existing.Store(res.Product, res.Node)
-				visitedElem.Store(res.Product, true)
-			}
-			nextCount++
-			
-			if res.Product == target {
-				cloned := deepCopyTree(res.Node)
-				foundRecipes = append(foundRecipes, cloned)
-				if len(foundRecipes) >= maxRecipes {
-					break
-				}
-			}
-		}
-
-		if nextCount == 0 {
-			break
-		}
-		tier++
-	}
-
-	nodeCount := 0
-	visitedElem.Range(func(_, _ any) bool {
-		nodeCount++
-		return true
-	})
-
-	return MultiTreeResult{
-		Trees:        foundRecipes,
-		VisitedNodes: nodeCount,
-	}, nil
-}
-
-func deepCopyTree(node *Node) *Node {
-	if node == nil {
-		return nil
-	}
-	copy := &Node{
-		Name:     node.Name,
-		Children: []*Node{},
-	}
-	for _, child := range node.Children {
-		copy.Children = append(copy.Children, deepCopyTree(child))
-	}
-	return copy
+  // Track recipes we've already seen to avoid duplicates
+  // Pake map untuk nyimpen resep yang udah kita temuin, biar gak duplikat
+  seenRecipes := make(map[string]bool)
+  
+  // Mark first recipe as seen
+  seenRecipes[RecipeToString(firstRecipe, target)] = true
+  
+  // Queue for BFS - we'll store recipe variations with the element we're focusing on
+  // Queue untuk BFS - kita simpan variasi resep beserta elemen yang lagi kita fokuskan
+  type QueueItem struct {
+    Recipe      map[string]Element  // Resep saat ini
+    FocusElem   string              // Elemen yang lagi kita coba variasikan
+  }
+  
+  queue := []QueueItem{}
+  
+  // First add target variations
+  // Pertama, tambahkan variasi untuk target
+  queue = append(queue, QueueItem{Recipe: firstRecipe, FocusElem: target})
+  
+  // Then add component variations - cari variasi untuk semua komponen non-base
+  // Kemudian tambahkan semua elemen non-dasar ke queue untuk divariasikan
+  for elem := range firstRecipe {
+    if !isBaseElement(elem) && elem != target {
+      queue = append(queue, QueueItem{Recipe: firstRecipe, FocusElem: elem})
+    }
+  }
+  
+  // BFS to explore different recipe variations at all levels
+  // BFS untuk menjelajahi variasi resep di semua level
+  for len(queue) > 0 && (maxRecipes <= 0 || len(recipes) < maxRecipes) {
+    // Get next item from queue
+    current := queue[0]
+    queue = queue[1:]
+    
+    // Skip base elements
+    if isBaseElement(current.FocusElem) {
+      continue
+    }
+    
+    // Current recipe and focus element
+    currentRecipe := current.Recipe
+    focusElem := current.FocusElem
+    
+    // Original recipe for this element
+    originalSources := currentRecipe[focusElem]
+    
+    // Get all valid ways to make this element
+    // Dapatkan semua cara valid untuk membuat elemen ini
+    validPairs := filterValidPairs(revCombinations[focusElem], focusElem, tierMap)
+    
+    // Try each alternative way to make this element
+    // Coba setiap alternatif cara membuat elemen ini
+    for _, pair := range validPairs {
+      // Skip the current recipe for this element
+      if (pair.First == originalSources.Source && pair.Second == originalSources.Partner) ||
+         (pair.First == originalSources.Partner && pair.Second == originalSources.Source) {
+        continue
+      }
+      
+      // Create a variation with this alternative
+      // Buat variasi resep dengan alternatif ini
+      variation := copyRecipe(currentRecipe)
+      variation[focusElem] = Element{Source: pair.First, Partner: pair.Second}
+      
+      // Ensure the new ingredients have valid recipes if they're not already in our recipe
+      // Pastikan ingredient baru punya resep valid kalo belum ada di resep kita
+      allValid := true
+      for _, ingredient := range []string{pair.First, pair.Second} {
+        if isBaseElement(ingredient) {
+          continue // Base elements are always valid
+        }
+        
+        // If we don't have a recipe for this ingredient yet, find one
+        if _, exists := variation[ingredient]; !exists {
+          ingredientRecipe := findIngredientRecipe(ingredient, combinations, revCombinations, tierMap, visited)
+          if len(ingredientRecipe) == 0 {
+            allValid = false
+            break
+          }
+          
+          // Add the ingredient's recipe to our variation
+          for elem, sources := range ingredientRecipe {
+            if _, exists := variation[elem]; !exists {
+              variation[elem] = sources
+              visited[elem] = true // Mark as visited
+            }
+          }
+        }
+      }
+      
+      if !allValid {
+        continue // Skip this variation if we couldn't complete it
+      }
+      
+      // Check if this is a unique recipe
+      // Cek apakah ini resep unik yang belum pernah kita temuin
+      recipeStr := RecipeToString(variation, target)
+      if !seenRecipes[recipeStr] {
+        seenRecipes[recipeStr] = true
+        recipes = append(recipes, variation)
+        
+        // Check if we have enough recipes
+        if maxRecipes > 0 && len(recipes) >= maxRecipes {
+          break
+        }
+        
+        // Add variations for each component in our recipe (BFS approach)
+        // Tambahkan variasi untuk setiap komponen dalam resep (pendekatan BFS)
+        for elem := range variation {
+          if !isBaseElement(elem) {
+            queue = append(queue, QueueItem{
+              Recipe:    variation,
+              FocusElem: elem,
+            })
+          }
+        }
+      }
+    }
+  }
+  
+  return MultipleRecipesResult{
+    Recipes:   recipes,
+    NodeCount: len(visited),
+  }
 }

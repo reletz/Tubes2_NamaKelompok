@@ -81,14 +81,3 @@ func BuildMultipleTrees(element string, result MultipleRecipesResult) ([]*Node, 
   // Return the trees and the NodeCount from the result
   return trees, result.NodeCount
 }
-
-// Helper function to check if an element is a base element
-func isBaseElement(element string) bool {
-	BaseElements := map[string]bool{
-		"Fire": true,
-		"Water": true,
-		"Air": true,
-		"Earth": true,
-	}
-	return BaseElements[element]
-}
