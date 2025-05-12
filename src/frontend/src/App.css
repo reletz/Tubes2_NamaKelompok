@@ -379,7 +379,7 @@
   border: none;
   width: 100%;
   height: 50px;
-  padding: 0 40px 0 20px; /* padding kiri dan kanan untuk isi & icon */
+  padding: 0 40px 0 20px;
   font-family: "Retro Gaming";
   font-size: 16px;
   color: #341E09;
@@ -401,12 +401,12 @@
 }
 
 .custom-radio input[type="radio"] {
-  display: none; /* sembunyikan radio button asli */
+  display: none; 
 }
 
 .radio-image {
   display: inline-block;
-  width: 24px;  /* sesuaikan dengan ukuran checkbox.png */
+  width: 24px;
   height: 24px;
   background-image: url('./media/checkbox.png');
   background-size: cover;
@@ -448,6 +448,23 @@
      3px -3px 0 #341E09,
     -3px  3px 0 #341E09,
      3px  3px 0 #341E09;
+}
+
+.Search-subtitle-2 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px;
+  margin-bottom: 0px;
+  font-family: "Retro Gaming";
+  color: white;
+  font-size: calc(3px + 2vmin);
+  text-align: left;
+  align-items: center;
+  text-shadow: 
+    -2px -2px 0 #341E09,
+     2px -2px 0 #341E09,
+    -2px  2px 0 #341E09,
+     2px  2px 0 #341E09;
 }
 
 .Ingredients-noresult {
@@ -493,15 +510,73 @@
 .tree-node {
   background-color: #8B4513;
   color: white;
-  border-radius: 10px;
   font-family: "Retro Gaming";
   text-align: center;
-  padding: auto;
-  font-size: 15px;
-  border: 2px solid #341E09;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 1px;
+  overflow: visible;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.tree-node p {
+  margin: 0;
+  font-size: 0.85em;
+  line-height: 1.1em;
 }
 
 .leaf-node {
   background-color: #E6D7C1;
   color: black;
+}
+
+/* .Search-Tree {
+  height: 80vh;
+} */
+
+.Search-Tree {
+  width: 100%;
+  background-repeat: repeat-y;
+  background-position: center top;
+  background-size: 100% auto;
+  background-image: url('./media/background.png'); /* tambahkan ini */
+}
+
+.Search-Tree .rd3t-link {
+  stroke: white !important;
+  stroke-width: 2px;
+}
+
+.node-label-multiline {
+  margin: 0;
+  padding: 1px 1px;
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+
+  white-space: normal;          /* penting */
+  overflow-wrap: break-word;    /* pecah kata */
+  word-break: break-word;
+  width: 100%;
+}
+
+.Search-meta-info {
+  font-family: "Retro Gaming";
+  color: white;
+  text-align: center;
+  font-size: calc(0.5px + 2vmin);
+}
+
+.Search-meta-info p {
+  margin: 0;
+  text-shadow: 
+    -2px -2px 0 #341E09,
+     2px -2px 0 #341E09,
+    -2px  2px 0 #341E09,
+     2px  2px 0 #341E09;
 }
