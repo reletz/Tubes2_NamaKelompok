@@ -13,7 +13,7 @@ func main(){
 	ingredientsTier := make(map[string]int)
 	scraper.Scraper(rawRecipe, ingredientsTier, reversedRawRecipe, true)
 	
-	target := "Cloud"
+	target := "Picnic"
 
 	// Standard BFS
 	start1 := time.Now()
@@ -42,14 +42,14 @@ func main(){
 	
 	// MultipleDFS demonstration
 	start4 := time.Now()
-	multiDfsResult := util.MultipleDfs(target, reversedRawRecipe, ingredientsTier, 10)
+	multiDfsResult := util.MultipleDfs(target, reversedRawRecipe, ingredientsTier, 80)
 	elapsed4 := time.Since(start4)
 	tree4, visited := util.BuildMultipleTrees(target, multiDfsResult)
 	util.SaveToJSON(tree4, "data/multi_dfs_results.json", visited, elapsed4)
 	fmt.Println(len(multiDfsResult.Recipes))
 
 	start5 := time.Now()
-	multicDfsResult := util.MultipleParallelDfs(target, reversedRawRecipe, ingredientsTier, 10, 10)
+	multicDfsResult := util.MultipleParallelDfs(target, reversedRawRecipe, ingredientsTier, 80, 10)
 	elapsed5 := time.Since(start5)
 	tree5, visited := util.BuildMultipleTrees(target, multicDfsResult)
 	util.SaveToJSON(tree5, "data/multi_dfs_results2.json", visited, elapsed5)
