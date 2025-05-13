@@ -20,6 +20,7 @@ services:
     build:
       context: ./src/backend
       dockerfile: Dockerfile
+    working_dir: /app/src/backend
     ports:
       - "8080:8080"
     volumes:
