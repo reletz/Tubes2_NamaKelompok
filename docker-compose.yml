@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  frontend:
+    container_name: little-alchemy-frontend
+    build:
+      context: ./src/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - little-alchemy-network
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+
+  backend:
+    container_name: little-alchemy-backend
+    build:
+      context: ./src/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/root/data
+    networks:
+      - little-alchemy-network
+
+networks:
+  little-alchemy-network:
+    driver: bridge
