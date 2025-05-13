@@ -8,13 +8,23 @@ import multiple from '../media/icons/multiple.svg';
 import biBFS from '../media/icons/biBFS.svg';
 
 const About = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue, formState: { isValid } } = useForm({ mode: "onChange" });
   const [treeDataList, setTreeDataList] = useState([]);
   const [metaInfo, setMetaInfo] = useState({ timetaken: "-", node_visited: 0 });
   const treeContainerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState(null);
   const [selectedSearchMode, setSelectedSearchMode] = useState(null);
+  const [isJumlahResepDisabled, setIsJumlahResepDisabled] = useState(false);
+
+  useEffect(() => {
+  if (selectedSearchMode === "Single") {
+    setValue("maksimalResep", 1); // Atur nilai menjadi 1
+    setIsJumlahResepDisabled(true); // Nonaktifkan input
+  } else {
+    setIsJumlahResepDisabled(false); // Aktifkan input
+  }
+}, [selectedSearchMode, setValue]);
 
   const onSubmit = async (querySearch) => {
     querySearch.maksimalResep = Number(querySearch.maksimalResep);
@@ -135,6 +145,7 @@ const About = () => {
               placeholder="Contoh: 5"
               className="custom-search-input"
               {...register("maksimalResep", { required: true, min: 1 })}
+              disabled={isJumlahResepDisabled}
             />
           </div>
 
@@ -165,7 +176,7 @@ const About = () => {
             />
           </div>       
 
-          <input type="submit" className="submit-button" />
+          <input type="submit" className="submit-button" value="Cari Elemen" disabled = {!isValid} />
         </div>
       </form>
 

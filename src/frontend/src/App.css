@@ -417,23 +417,34 @@
 }
 
 .submit-button {
-  background-color: #E6D7C1;
-  color:  #341E09;
-  font-family: "Retro Gaming";
-  font-size: calc(3px + 2vmin);
-  padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  background-image: url('./media/fields/submit-button.svg');  
+  background-position: center;
+  background-size: 100% 100%; 
+  background-position: center;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-.submit-button:active {
-  background-color: #E6D7C1;
+  background-color: transparent;
+  width: 311px;
+  height: 68px;
+
+  font-family: "Retro Gaming";
+  font-size: calc(8px + 2vmin);
   color: #341E09;
+
+  margin-top: 24px;
+  cursor: pointer;
 }
-.submit-button:hover {
-  background-color: #341E09;
-  color: #E6D7C1;
+.submit-button:disabled {
+  /* background-color: #E6D7C1;
+  color: #341E09; */
+  background-image: url('./media/fields/submit-button-disabled.svg'); 
+  color: rgba(52, 30, 9, 0.75);
+  cursor: not-allowed;
 }
 
 .options-button{
@@ -443,7 +454,8 @@
   justify-content: center;
   gap: 8px;
 
-  background-image: url('./media/fields/option-button.svg');  background-position: center;
+  background-image: url('./media/fields/option-button.svg');  
+  background-position: center;
   background-size: 100% 100%; 
   background-position: center;
   border: none;
@@ -453,8 +465,9 @@
 
   font-family: "Retro Gaming";
   font-size: calc(3px + 2vmin);
-  color: rgba(52, 30, 9, 0.75);
+  color: rgba(52, 30, 9, 1);
 
+  cursor: pointer;
 }
 
 .options-button:hover{
