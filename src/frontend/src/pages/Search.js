@@ -2,7 +2,9 @@ import { React, useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Tree from 'react-d3-tree';
 import telenanBg from '../media/talenan.png';
+import BFS from '../media/icons/BFS.svg';
 import DFS from '../media/icons/DFS.svg';
+import single from '../media/icons/single.svg';
 import multiple from '../media/icons/multiple.svg';
 import biBFS from '../media/icons/biBFS.svg';
 
