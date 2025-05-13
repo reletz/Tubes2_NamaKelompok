@@ -1,35 +1,29 @@
 # Build stage
-FROM golang:1.24-alpine AS builder
+FROM node:23-alpine AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy go mod and sum files
-COPY go.mod go.sum ./
+# Copy package.json and install dependencies
+COPY package.json package-lock.json* ./
+RUN npm install
 
-# Download all dependencies
-RUN go mod download
-
-# Copy the source code
+# Copy the rest of the application code
 COPY . .
 
 # Build the application
-RUN go build -o main .
+RUN npm run build
 
-# Run stage
-FROM alpine:latest
+# Production stage
+FROM nginx:alpine
 
-# Set working directory
-WORKDIR /app
+# Copy the build from the build stage
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy the binary from builder
-COPY --from=builder /app/main .
+# Copy custom nginx config if needed
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy data directory
-COPY --from=builder /app/data ./data
+# Expose port 80
+EXPOSE 80
 
-# Expose port
-EXPOSE 8080
-
-# Command to run the executable
-CMD ["./main"]
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
