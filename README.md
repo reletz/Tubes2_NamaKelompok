@@ -10,8 +10,6 @@ Aplikasi web untuk mencari resep elemen pada permainan Little Alchemy 2 mengguna
 - [Menjalankan Aplikasi](#menjalankan-aplikasi)
 - [Struktur Folder](#struktur-folder)
 - [Kontributor](#kontributor)
-- [Lisensi](#lisensi)
-
 ---
 
 ## Fitur
