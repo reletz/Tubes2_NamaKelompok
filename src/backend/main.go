@@ -25,15 +25,11 @@ type SearchRequest struct {
 	ModePencarian string `json:"modePencarian"`
 }
 
-type TreeNode struct {
-	Name     string     `json:"name"`
-	Children []TreeNode `json:"children,omitempty"`
-}
-
+// Updated TreeResponse to use the existing util.Node type directly
 type TreeResponse struct {
-	TreeData    []TreeNode `json:"treeData"`
-	TimeTaken   string     `json:"timetaken"`
-	NodeVisited int        `json:"node_visited"`
+	TreeData    []*util.Node `json:"treeData"`
+	TimeTaken   string       `json:"timetaken"`
+	NodeVisited int          `json:"node_visited"`
 }
 
 // loadRecipeData loads recipe data either from file or by scraping
@@ -135,37 +131,21 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 
 	trees, nodeVisited := util.BuildMultipleTrees(req.NamaResep, result)
 
-	// nyesuaiin jumlah resep
+	// Limit the number of trees to the max requested
 	if len(trees) > req.MaksimalResep {
 		trees = trees[:req.MaksimalResep]
 	}
 
-	// convert util.Node to TreeNode
-	var convert func(n *util.Node) TreeNode
-	convert = func(n *util.Node) TreeNode {
-		children := []TreeNode{}
-		for _, c := range n.Children {
-			children = append(children, convert(c))
-		}
-		return TreeNode{
-			Name:     n.Name,
-			Children: children,
-		}
+	jsonData, err := util.ConvertToJSON(trees, nodeVisited, elapsed)
+	if err != nil {
+		log.Printf("Error converting to JSON: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
 	}
 
-	var treeData []TreeNode
-	for _, t := range trees {
-		treeData = append(treeData, convert(t))
-	}
-
-	response := TreeResponse{
-		TreeData:    treeData,
-		TimeTaken:   elapsed.String(),
-		NodeVisited: nodeVisited,
-	}
-
+	// Set the content type and write the JSON data directly
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	w.Write(jsonData)
 }
 
 func main() {
