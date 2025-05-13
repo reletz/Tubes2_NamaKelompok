@@ -6,7 +6,7 @@ import (
 
 // MultipleParallelDfs nyari banyak resep valid dengan cara paralel
 // Implementasi ini ngikutin cara kerja MultipleDfs yang asli tapi pake multithreading
-func MultipleParallelDfs(target string, revCombinations map[string][]Pair, tierMap map[string]int, maxRecipes int, numWorkers int) MultipleRecipesResult {
+func Legacy_MultipleParallelDfs(target string, revCombinations map[string][]Pair, tierMap map[string]int, maxRecipes int, numWorkers int) MultipleRecipesResult {
   // Kalo numWorkers gak diisi, kita pake nilai default aja
   if numWorkers <= 0 {
     numWorkers = 4 // Default pake 4 worker

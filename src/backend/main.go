@@ -13,11 +13,11 @@ func main(){
 	ingredientsTier := make(map[string]int)
 	scraper.Scraper(rawRecipe, ingredientsTier, reversedRawRecipe, true)
 	
-	target := "Picnic"
+	target := "Family tree"
 
 	// Standard BFS
 	start1 := time.Now()
-	prev1 := util.ShortestBfsFiltered(target, rawRecipe, ingredientsTier)
+	prev1 := util.ShortestBfs(target, rawRecipe, ingredientsTier)
 	tree1, visited := util.BuildTree(target, prev1)
 	elapsed1 := time.Since(start1)
 	fmt.Print("BFS for " + target + ", time taken: ")
@@ -72,10 +72,10 @@ func main(){
 	// util.SaveToJSON(tree5, "data/multi_dfs_results_parallel.json", visited, elapsed5)
 	// fmt.Println(len(multicDfsResult.Recipes))
 
-	// start6 := time.Now()
-	// multic1DfsResult := util.OptimizedParallelDfs(target, reversedRawRecipe, ingredientsTier, 10, 4)
-	// elapsed6 := time.Since(start6)
-	// tree6, visited := util.BuildMultipleTrees(target, multic1DfsResult)
-	// util.SaveToJSON(tree6, "data/multi_dfs_results_optimize.json", visited, elapsed6)
-	// fmt.Println(len(multic1DfsResult.Recipes))
+	start6 := time.Now()
+	multic1DfsResult := util.MultipleDfs(target, reversedRawRecipe, ingredientsTier, 100, 4)
+	elapsed6 := time.Since(start6)
+	tree6, visited := util.BuildMultipleTrees(target, multic1DfsResult)
+	util.SaveToJSON(tree6, "data/multi_dfs_results_optimize.json", visited, elapsed6)
+	fmt.Println(len(multic1DfsResult.Recipes))
 }

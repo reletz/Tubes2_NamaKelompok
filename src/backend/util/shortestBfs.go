@@ -1,57 +1,58 @@
 package util
 
-// Element nyatet dua bahan ("Source" dan "Partner") yang pertama kali
-// digabung buat bikin produk.
-// Source = bahan yang lagi kita proses (dikeluarin dari queue)
-// Partner = bahan lain (dari set yang udah dilihat) yang kita gabungin sama Source buat bikin produk.
-
-// ShortestBfs jalanin BFS mulai dari elemen dasar
-// sampai nemuin target (atau habis opsi). Hasilnya adalah map
-// dari produk ke Element (siapa Source & Partner yang ngasilin itu),
-// jadi kita bisa nyusun lagi jalur resepnya nanti.
-func ShortestBfs(target string, combinations map[Pair]string) map[string]Element {
-	// 1) Siapin queue yang berisi elemen dasar
+// ShortestBfs implementasi algoritma BFS dengan batasan tingkatan
+// buat nyari jalur terpendek bikin elemen target.
+// Cuma mempertimbangkan kombinasi dimana kedua bahan dari tier lebih rendah dari produk.
+func ShortestBfs(target string, combinations map[Pair]string, tierMap map[string]int) map[string]Element {
+	// Siapin queue dengan elemen dasar
 	queue := make([]string, len(BaseElements))
 	copy(queue, BaseElements)
 
-	// 2) seen = set buat tandain elemen yang udah kita lihat
+	// Tandain elemen yang udah dilihat
 	seen := make(map[string]bool, len(BaseElements))
 	for _, b := range BaseElements {
 		seen[b] = true
 	}
 
-	// 3) prev bakal nyimpen, buat tiap produk, Element{Source, Partner}
-	//    yang pertama kali nghasilin produk itu
+	// Simpan resep untuk setiap elemen yang dihasilkan
 	prev := make(map[string]Element)
 
-	// 4) Loop BFS: selama masih ada elemen di queue (i < len(queue))
+	// Loop BFS
 	for i := 0; i < len(queue); i++ {
 		current := queue[i]
 
-		// Kalo current udah sama dengan target, kita berhenti nyari
+		// Kalo udah ketemu target, berhenti pencarian
 		if current == target {
-				break
+			break
 		}
 
-		// 5) Untuk tiap bahan "partner" yang udah kita lihat,
-		//    coba gabungin current + partner, pake combinations[pair] -> produk
+		// Ambil tier elemen saat ini
+		currentTier := tierMap[current]
+
+		// Coba kombinasiin elemen saat ini dengan semua elemen yang udah dilihat
 		for partner := range seen {
-			// Cari produk yang bisa dibikin dengan Pair{A: current, B: partner}
+			// Ambil tier partner
+			partnerTier := tierMap[partner]
+			
+			// Coba bikin produk dari pasangan ini
 			pair := Pair{First: current, Second: partner}
 			if product, exists := combinations[pair]; exists {
-				// 6) Kalo produk baru (belum pernah dilihat), tandai dan masukin queue
-				if !seen[product] {
-					seen[product] = true
-					// catet siapa Source & partner-nya
-					prev[product] = Element{Source: current, Partner: partner}
-					// masukin ke queue buat diproses nanti
-					queue = append(queue, product)
+				// Ambil tier produk
+				productTier := tierMap[product]
+				
+				// Cek apakah ini kombinasi tier yang valid:
+				// Produk harus tier lebih tinggi dari kedua bahan
+				if currentTier < productTier && partnerTier < productTier {
+					// Kalo produk baru (belum pernah dilihat), tambahin ke queue
+					if !seen[product] {
+						seen[product] = true
+						prev[product] = Element{Source: current, Partner: partner}
+						queue = append(queue, product)
+					}
 				}
 			}
 		}
 	}
 
-	// 7) Kembalikan map prev. Dari sini kita bisa bikin jalur resep:
-	//    mulai dari target, lihat prev[target], terus lihat prev[Source], dst.
 	return prev
 }
