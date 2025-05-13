@@ -324,7 +324,7 @@
 
 .Search-form-card {
   text-align: left;
-  width: 45%;
+  width: 50%;
 }
 
 .Search-form h3 {
@@ -408,12 +408,12 @@
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url('./media/checkbox.png');
+  background-image: url('./media/icons/checkbox.svg');
   background-size: cover;
 }
 
 .custom-radio input[type="radio"]:checked + .radio-image {
-  background-image: url('./media/checkbox-checked.png');
+  background-image: url('./media/icons/checkbox-checked.svg');
 }
 
 .submit-button {
@@ -434,6 +434,75 @@
 .submit-button:hover {
   background-color: #341E09;
   color: #E6D7C1;
+}
+
+.options-button{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  background-image: url('./media/fields/option-button.svg');  background-position: center;
+  background-size: 100% 100%; 
+  background-position: center;
+  border: none;
+  background-color: transparent;
+  width: 172px;
+  height: 68px;
+
+  font-family: "Retro Gaming";
+  font-size: calc(3px + 2vmin);
+  color: rgba(52, 30, 9, 0.75);
+
+}
+
+.options-button:hover{
+  background-image: url('./media/fields/option-button-active.svg');
+  color: #E6D7C1 
+}
+
+.options-button.active{
+  background-image: url('./media/fields/option-button-active.svg');
+  color: #E6D7C1
+}
+
+.options-button img{
+  /* Color of #341E09; */
+  filter: invert(11%) sepia(9%) saturate(6276%) hue-rotate(356deg) brightness(92%) contrast(94%);
+}
+
+.options-button:hover img{
+   /* Color of #E6D7C1; */
+  filter: invert(98%) sepia(5%) saturate(1974%) hue-rotate(318deg) brightness(96%) contrast(87%);
+}
+
+.options-button.active img{
+  /* Color of #E6D7C1; */
+  filter: invert(98%) sepia(5%) saturate(1974%) hue-rotate(318deg) brightness(96%) contrast(87%);
+}
+
+.custom-search-input {
+  background-size: 100% 100%; 
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  width: 100%;
+  height: 50px;
+  padding: 0 40px 0 20px;
+  font-family: "Retro Gaming";
+  font-size: 16px;
+  color: #341E09;
+  outline: none;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.options-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
 }
 
 .Ingredients-subtitle, .Search-subtitle {

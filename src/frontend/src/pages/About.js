@@ -1,7 +1,7 @@
 import React from 'react';
-import nau from '../media/nau.png';
-import lucas from '../media/lucas.png';
-import lana from '../media/lana.png';
+import nau from '../media/icons/nau.png';
+import lucas from '../media/icons/lucas.png';
+import lana from '../media/icons/lana.png';
 import '../App.css';
 
 const About = () => {

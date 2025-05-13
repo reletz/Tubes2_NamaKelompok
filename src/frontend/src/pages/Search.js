@@ -2,6 +2,9 @@ import { React, useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Tree from 'react-d3-tree';
 import telenanBg from '../media/talenan.png';
+import DFS from '../media/icons/DFS.svg';
+import multiple from '../media/icons/multiple.svg';
+import biBFS from '../media/icons/biBFS.svg';
 
 const About = () => {
   const { register, handleSubmit } = useForm();
@@ -9,6 +12,8 @@ const About = () => {
   const [metaInfo, setMetaInfo] = useState({ timetaken: "-", node_visited: 0 });
   const treeContainerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState(null);
+  const [selectedSearchMode, setSelectedSearchMode] = useState(null);
 
   const onSubmit = async (querySearch) => {
     querySearch.maksimalResep = Number(querySearch.maksimalResep);
@@ -77,6 +82,34 @@ const About = () => {
     );
   };
 
+  const OptionsButton = ({ options, dataType, selectedOption, setSelectedOption }) => {
+    const handleClick = (value) => {
+      setSelectedOption(value);
+    };
+
+    return (
+    <div className="options-container">
+      {options.map((option, index) => (
+        <button
+          key={index}
+          type="button"
+          className={`options-button ${selectedOption === option.name ? 'active' : ''}`}
+          onClick={() => handleClick(option.name)}
+        >
+          <img src={option.icon} alt={option.name} />
+          {option.name}
+        </button>
+      ))}
+
+      <input
+        type="hidden"
+        value={selectedOption || ""}
+        {...register(dataType, { required: true })}
+      />
+    </div>
+  );
+};
+
   return (
     <div className="Search-container">
       <h1 className="Search-title">CARI&nbsp;&nbsp;&nbsp;RESEP</h1>
@@ -87,7 +120,7 @@ const About = () => {
             <h3>Nama Resep*</h3>
             <input
               type="text"
-              placeholder="Contoh: Babe the blue ox"
+              placeholder="Contoh: Brick, Cloud"
               autoComplete="off"
               className="custom-search-input"
               {...register("namaResep", { required: true })}
@@ -106,32 +139,30 @@ const About = () => {
 
           <div className="Search-form-card">
             <h3>Algoritma*</h3>
-            <div className="Search-form-card-radio">
-              <div className="Search-form-card-radio-2">
-                <label className="custom-radio">
-                  <input
-                    type="radio"
-                    {...register("algoritma", { required: true })}
-                    value="BFS"
-                  />
-                  <span className="radio-image" />
-                </label>
-
-                <label className="custom-radio">
-                  <input
-                    type="radio"
-                    {...register("algoritma", { required: true })}
-                    value="DFS"
-                  />
-                  <span className="radio-image" />
-                </label>
-              </div>
-              <div className="Search-form-card-radio-3">
-                <p>BFS</p>
-                <p>DFS</p>
-              </div>
-            </div>
+            <OptionsButton
+              options={[
+                { name: 'BFS', icon: BFS },
+                { name: 'DFS', icon: DFS },
+                { name: 'Bi-BFS', icon: biBFS },
+              ]}
+              selectedOption={selectedAlgorithm}
+              setSelectedOption={setSelectedAlgorithm}
+              dataType="algoritma"
+            />
           </div>
+
+          <div className="Search-form-card">
+            <h3>Mode Pencarian*</h3>
+            <OptionsButton
+              options={[
+                { name: 'Single', icon: single },
+                { name: 'Multiple', icon: multiple },
+              ]}
+              selectedOption = {selectedSearchMode}
+              setSelectedOption={setSelectedSearchMode}
+              dataType="modePencarian"
+            />
+          </div>       
 
           <input type="submit" className="submit-button" />
         </div>
@@ -140,7 +171,7 @@ const About = () => {
       {/* Tree View */}
       {treeDataList.length > 0 && (
         <div className="Search-Tree" ref={treeContainerRef} style={{ width: '100%', minHeight: '100vh' }}>
-          <h2 className="Search-subtitle">HASIL PENCARIAN</h2>
+          <h1 className="Search-title">HASIL PENCARIAN</h1>
           <div className="Search-meta-info">
             <p>Waktu Pencarian: {metaInfo.timetaken}</p>
             <p>Node yang Dikunjungi: {metaInfo.node_visited}</p>
