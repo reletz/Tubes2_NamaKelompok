@@ -35,7 +35,7 @@ func main(){
 	
 	// MultipleBFS demonstration
 	start3 := time.Now()
-	multiBfsResult := util.MultipleBidirectional(target, rawRecipe, reversedRawRecipe, ingredientsTier, 10000, 4)
+	multiBfsResult := util.MultipleBidirectional(target, rawRecipe, reversedRawRecipe, ingredientsTier, 100, 4)
 	tree3, visited := util.BuildMultipleTrees(target, multiBfsResult)
 	elapsed3 := time.Since(start3)
 	util.SaveToJSON(tree3, "data/multi_bidir_results.json", visited, elapsed3)
