@@ -10,9 +10,10 @@ import (
 )
 
 type SearchRequest struct {
-	NamaResep     string `json:"namaResep"`
-	MaksimalResep int    `json:"maksimalResep"`
-	Algoritma     string `json:"algoritma"`
+	NamaResep      string `json:"namaResep"`
+	MaksimalResep  int    `json:"maksimalResep"`
+	Algoritma      string `json:"algoritma"`
+	ModePencarian  string `json:"modePencarian"`
 }
 
 type TreeNode struct {
@@ -44,11 +45,12 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 
 	var req SearchRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		log.Println("❌ JSON decode error:", err)
 		http.Error(w, "Invalid JSON input", http.StatusBadRequest)
 		return
 	}
 
-	log.Printf("Received search: NamaResep=%s, MaksimalResep=%d, Algoritma=%s",
+	log.Printf("Received search: NamaResep=%s, MaksimalResep=%d, Algoritma=%s, ModePencarian=%s",
 		req.NamaResep, req.MaksimalResep, req.Algoritma)
 
 	// scrape
@@ -57,12 +59,24 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	ingredientsTier := make(map[string]int)
 	scraper.Scraper(rawRecipe, ingredientsTier, reversedRawRecipe, true)
 
-	// dfs dulu untuk sementara
+	var result util.MultipleRecipesResult
 	start := time.Now()
-	multiResult := util.MultipleDfs(req.NamaResep, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 10)
+
+	switch req.Algoritma {
+	case "BFS":
+		result = util.MultipleBfs(req.NamaResep, rawRecipe, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
+	case "DFS":
+		result = util.MultipleDfs(req.NamaResep, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
+	case "Bi-BFS":
+		result = util.MultipleBidirectional(req.NamaResep, rawRecipe, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
+	default:
+		http.Error(w, "Unsupported algorithm", http.StatusBadRequest)
+		return
+	}
+
 	elapsed := time.Since(start)
 
-	trees, nodeVisited := util.BuildMultipleTrees(req.NamaResep, multiResult)
+	trees, nodeVisited := util.BuildMultipleTrees(req.NamaResep, result)
 
 	// convert util.Node to TreeNode
 	var convert func(n *util.Node) TreeNode
