@@ -150,6 +150,19 @@ const About = () => {
           </div>
 
           <div className="Search-form-card">
+            <h3>Mode Pencarian*</h3>
+            <OptionsButton
+              options={[
+                { name: 'Single', icon: single },
+                { name: 'Multiple', icon: multiple },
+              ]}
+              selectedOption = {selectedSearchMode}
+              setSelectedOption={setSelectedSearchMode}
+              dataType="modePencarian"
+            />
+          </div>       
+          
+          <div className="Search-form-card">
             <h3>Algoritma*</h3>
             <OptionsButton
               options={[
@@ -163,18 +176,6 @@ const About = () => {
             />
           </div>
 
-          <div className="Search-form-card">
-            <h3>Mode Pencarian*</h3>
-            <OptionsButton
-              options={[
-                { name: 'Single', icon: single },
-                { name: 'Multiple', icon: multiple },
-              ]}
-              selectedOption = {selectedSearchMode}
-              setSelectedOption={setSelectedSearchMode}
-              dataType="modePencarian"
-            />
-          </div>       
 
           <input type="submit" className="submit-button" value="Cari Elemen" disabled = {!isValid} />
         </div>
