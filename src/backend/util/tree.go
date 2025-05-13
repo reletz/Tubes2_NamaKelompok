@@ -1,6 +1,9 @@
 package util
 
-var BaseElements = []string{"Air", "Earth", "Fire", "Water"}
+var BaseElements = []string{
+  "Air", "Earth", "Fire", "Water",
+  "Clock", "Death", "Dinosaur", "Family tree",
+  "Peat", "Skeleton", "Sloth", "Tree"}
 
 // BuildTree builds a tree from a recipe map iteratively to avoid stack overflow
 func BuildTree(element string, recipeMap map[string]Element) (*Node, int) {

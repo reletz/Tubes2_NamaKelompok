@@ -1,5 +1,7 @@
 package util
 
+import "slices"
+
 // RecipeToString menghasilkan representasi string unik dari sebuah resep
 // Berfungsi sebagai "fingerprint" resep untuk deteksi duplikat
 func RecipeToString(recipe map[string]Element, target string) string {
@@ -269,13 +271,7 @@ func copyRecipe(original map[string]Element) map[string]Element {
 
 // Helper function to check if an element is a base element
 func isBaseElement(element string) bool {
-	BaseElements := map[string]bool{
-		"Fire": true,
-		"Water": true,
-		"Air": true,
-		"Earth": true,
-	}
-	return BaseElements[element]
+  return slices.Contains(BaseElements, element)
 }
 
 // MultipleRecipesResult buat nyimpen hasil dari MultipleRecipesDfs
