@@ -23,7 +23,7 @@ const About = () => {
           <div className="About-info">
             <h2>SAMANTHA LAQUEENNA GINTING</h2>
             <h3>NIM 13523138</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ultrices turpis eu libero elementum, ut cursus turpis commodo. Vestibulum dui arcu, aliquet vitae mauris vel, congue mollis nunc. Etiam quam mi, convallis ac elit id, sagittis cursus eros.</p>
+            <p>Samantha Laqueenna Ginting, akrab disapa Lana, memegang peranan penting dalam tugas besar ini. Sebagai Frontend Developer, ia bertanggung jawab dalam merancang dan mengimplementasikan antarmuka yang responsif dan interaktif. Lana menggunakan React.js sebagai kerangka kerja utama, memastikan bahwa setiap komponen visual bekerja secara mulus dan terintegrasi dengan baik dengan backend. Ia juga berperan dalam menyusun alur interaksi pengguna, mengatur state management menggunakan React Hooks, serta menghubungkan API dari backend agar data dapat ditampilkan secara real-time.</p>
           </div>
         </div>
 
@@ -32,7 +32,7 @@ const About = () => {
           <div className="About-info">
             <h2>NICHOLAS ANDHIKA LUCAS</h2>
             <h3>NIM 13523014</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ultrices turpis eu libero elementum, ut cursus turpis commodo. Vestibulum dui arcu, aliquet vitae mauris vel, congue mollis nunc. Etiam quam mi, convallis ac elit id, sagittis cursus eros.</p>
+            <p>Nicholas Andhika Lucas, akrab disapa Lucas, memegang peranan penting dalam tugas besar ni. Sebagai UI/UX Designer dan Frontend Developer, Lucas bertanggung jawab dalam merancang tampilan antarmuka yang tidak hanya menarik, tetapi juga mudah digunakan dan intuitif bagi pengguna. Dalam perannya sebagai Frontend Developer, Lucas mengimplementasikan desain tersebut ke dalam kode menggunakan framework seperti React.js, memastikan setiap elemen UI berfungsi dengan baik di berbagai perangkat dan ukuran layar.</p>
           </div>
         </div>
 
@@ -41,7 +41,7 @@ const About = () => {
           <div className="About-info">
             <h2>NAUFARREL ZHAFIF ABHISTA</h2>
             <h3>NIM 13523149</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ultrices turpis eu libero elementum, ut cursus turpis commodo. Vestibulum dui arcu, aliquet vitae mauris vel, congue mollis nunc. Etiam quam mi, convallis ac elit id, sagittis cursus eros.</p>
+            <p>Naufarrel Zhafif Abhista, akrab disapa Nau, memegang peranan penting dalam tugas besar ni. Sebagai Backend Developer, Nau bertanggung jawab membangun dan mengelola logika serta struktur data di sisi server. Dalam tugas besar ini, Nau juga berperan penting dalam merancang dan mengimplementasikan algoritma pencarian seperti BFS dan DFS yang digunakan untuk menemukan jalur pembuatan resep dalam sistem. Ia mengoptimalkan algoritma tersebut agar dapat bekerja secara cepat meskipun pada dataset yang besar dan kompleks.</p>
           </div>
         </div>
 

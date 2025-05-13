@@ -43,7 +43,7 @@ const About = () => {
 
       if (!response.ok) {
         const errText = await response.text();
-        console.error("❌ Backend error:", errText);
+        console.error("Backend error:", errText);
         return;
       }
 
@@ -221,7 +221,7 @@ const About = () => {
                   style={{
                     width: '75%',
                     margin: '0 auto',
-                    height: '640px', // fix height
+                    height: '640px',
                     backgroundImage: `url(${talenanBg})`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',

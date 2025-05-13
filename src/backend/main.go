@@ -45,7 +45,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 
 	var req SearchRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		log.Println("❌ JSON decode error:", err)
+		log.Println("JSON decode error:", err)
 		http.Error(w, "Invalid JSON input", http.StatusBadRequest)
 		return
 	}

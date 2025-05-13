@@ -234,7 +234,7 @@
 }
 
 .Search-title-result {
-  margin-top: 64px; /* atur sesuai keinginan, misalnya 64px */
+  margin-top: 64px;
 }
 
 .About-description {
@@ -629,7 +629,7 @@
   background-repeat: repeat-y;
   background-position: center top;
   background-size: 100% auto;
-  background-image: url('./media/background.png'); /* tambahkan ini */
+  background-image: url('./media/background.png');
 }
 
 .Search-Tree .rd3t-link {
@@ -644,8 +644,8 @@
   line-height: 1.2;
   text-align: center;
 
-  white-space: normal;          /* penting */
-  overflow-wrap: break-word;    /* pecah kata */
+  white-space: normal;
+  overflow-wrap: break-word; 
   word-break: break-word;
   width: 100%;
 }
