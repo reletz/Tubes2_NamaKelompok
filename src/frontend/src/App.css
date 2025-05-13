@@ -229,8 +229,12 @@
      6px -6px 0 #341E09,
     -6px  6px 0 #341E09,
      6px  6px 0 #341E09;
-  margin-top: 40px;
-  margin-bottom: 30px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.Search-title-result {
+  margin-top: 64px; /* atur sesuai keinginan, misalnya 64px */
 }
 
 .About-description {
@@ -324,7 +328,7 @@
 
 .Search-form-card {
   text-align: left;
-  width: 50%;
+  width: 40%;
 }
 
 .Search-form h3 {
@@ -378,19 +382,17 @@
   background-position: center;
   border: none;
   width: 100%;
-  height: 50px;
-  padding: 0 40px 0 20px;
+  height: 54px;
+  padding: 0 20px;
   font-family: "Retro Gaming";
   font-size: 16px;
   color: #341E09;
   outline: none;
   background-color: transparent;
   box-sizing: border-box;
-}
 
-.custom-search-input {
-  background-image: url('./media/search-bar-2.png');
-
+  background-image: url('./media/fields/input-box.svg');
+  
 }
 
 .custom-radio {
@@ -417,23 +419,35 @@
 }
 
 .submit-button {
-  background-color: #E6D7C1;
-  color:  #341E09;
-  font-family: "Retro Gaming";
-  font-size: calc(3px + 2vmin);
-  padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  background-image: url('./media/fields/submit-button.svg');  
+  background-position: center;
+  background-size: 100% 100%; 
+  background-position: center;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-.submit-button:active {
-  background-color: #E6D7C1;
+  background-color: transparent;
+  width: 311px;
+  height: 68px;
+
+  font-family: "Retro Gaming";
+  font-size: calc(8px + 2vmin);
   color: #341E09;
+
+  margin-top: 32px;
+  /* margin-bottom: 32px; */
+  cursor: pointer;
 }
-.submit-button:hover {
-  background-color: #341E09;
-  color: #E6D7C1;
+.submit-button:disabled {
+  /* background-color: #E6D7C1;
+  color: #341E09; */
+  background-image: url('./media/fields/submit-button-disabled.svg'); 
+  color: rgba(52, 30, 9, 0.75);
+  cursor: not-allowed;
 }
 
 .options-button{
@@ -443,7 +457,8 @@
   justify-content: center;
   gap: 8px;
 
-  background-image: url('./media/fields/option-button.svg');  background-position: center;
+  background-image: url('./media/fields/option-button.svg');  
+  background-position: center;
   background-size: 100% 100%; 
   background-position: center;
   border: none;
@@ -453,8 +468,9 @@
 
   font-family: "Retro Gaming";
   font-size: calc(3px + 2vmin);
-  color: rgba(52, 30, 9, 0.75);
+  color: rgba(52, 30, 9, 1);
 
+  cursor: pointer;
 }
 
 .options-button:hover{
@@ -522,7 +538,7 @@
 .Search-subtitle-2 {
   display: flex;
   flex-direction: column;
-  margin-top: 60px;
+  margin-top: 30px;
   margin-bottom: 20px;
   font-family: "Retro Gaming";
   color: white;
@@ -617,7 +633,7 @@
 }
 
 .Search-Tree .rd3t-link {
-  stroke: #341E09 !important;
+  stroke: white !important;
   stroke-width: 2px;
 }
 
