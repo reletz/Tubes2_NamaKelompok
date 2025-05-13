@@ -78,6 +78,11 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 
 	trees, nodeVisited := util.BuildMultipleTrees(req.NamaResep, result)
 
+	// nyesuaiin jumlah resep
+	if len(trees) > req.MaksimalResep {
+		trees = trees[:req.MaksimalResep]
+	}
+
 	// convert util.Node to TreeNode
 	var convert func(n *util.Node) TreeNode
 	convert = func(n *util.Node) TreeNode {
