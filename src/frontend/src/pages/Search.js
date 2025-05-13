@@ -1,6 +1,7 @@
 import { React, useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Tree from 'react-d3-tree';
+import telenanBg from '../media/talenan.png';
 
 const About = () => {
   const { register, handleSubmit } = useForm();
@@ -58,8 +59,8 @@ const About = () => {
   const renderCustomNode = ({ nodeDatum }) => {
     const isLeaf = !nodeDatum.children || nodeDatum.children.length === 0;
     const textLength = nodeDatum.name.length;
-    const width = 80;
-    const baseHeight = 40;
+    const width = 70;
+    const baseHeight = 35;
     const estimatedLineCount = Math.ceil(textLength / 16);
     const height = baseHeight * estimatedLineCount;
     return (
@@ -146,22 +147,34 @@ const About = () => {
           </div>
           {treeDataList.map((treeData, idx) => {
             const depth = calculateTreeDepth(treeData);
-            const height = Math.max(depth * 120, 300);
+            const height = Math.max(depth * 80, 120);
             const treeWidth = calculateTreeWidth(treeData) * 120;
             return (
               <div key={idx} style={{ height: `${height}px`}}>
-                <h3 className="Search-subtitle-2">{treeData.name}</h3>
-                <Tree
-                  data={treeData}
-                  orientation="vertical"
-                  translate={{ x: containerWidth / 2, y: 50 }}
-                  nodeSize={{ x: 90, y: 70 }}
-                  zoomable={false}
-                  initialZoom={Math.min(containerWidth / treeWidth, 1)}
-                  pathFunc="diagonal"
-                  separation={{ siblings: 1.2, nonSiblings: 1.5 }}
-                  renderCustomNodeElement={renderCustomNode}
-                />
+                <h3 className="Search-subtitle-2">Resep {treeData.name} #{idx+1}</h3>
+                <div
+                  style={{
+                    width: '80%',
+                    margin: '0 auto',
+                    height: `${height}px`,
+                    backgroundImage: `url(${telenanBg})`,
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  <Tree
+                    data={treeData}
+                    orientation="vertical"
+                    translate={{ x: containerWidth * 0.4, y: 50 }}
+                    nodeSize={{ x: 65, y: 60 }}
+                    zoomable={true}
+                    initialZoom={Math.min(containerWidth / treeWidth, 0.3)}
+                    pathFunc="diagonal"
+                    separation={{ siblings: 1.2, nonSiblings: 1.5 }}
+                    renderCustomNodeElement={renderCustomNode}
+                  />
+                </div>
               </div>
             );
           })}

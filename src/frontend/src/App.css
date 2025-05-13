@@ -454,7 +454,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 60px;
-  margin-bottom: 0px;
+  margin-bottom: 20px;
   font-family: "Retro Gaming";
   color: white;
   font-size: calc(3px + 2vmin);
@@ -548,7 +548,7 @@
 }
 
 .Search-Tree .rd3t-link {
-  stroke: white !important;
+  stroke: #341E09 !important;
   stroke-width: 2px;
 }
 
