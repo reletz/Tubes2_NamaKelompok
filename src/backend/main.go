@@ -153,6 +153,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func capitalizeFirstLetter(text string) string {
+	text = strings.ToLower(text)
 	re := regexp.MustCompile(`(^|[.!?]\s+)([a-z])`)
 	
 	return re.ReplaceAllStringFunc(text, func(match string) string {
