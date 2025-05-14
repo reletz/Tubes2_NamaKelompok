@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"regexp"
+	"strings"
 )
 
 // Global variables to store recipe data
@@ -115,13 +117,15 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	var result util.MultipleRecipesResult
 	start := time.Now()
 
+	target := capitalizeFirstLetter(req.NamaResep)
+
 	switch req.Algoritma {
 	case "BFS":
-		result = util.MultipleBfs(req.NamaResep, rawRecipe, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
+		result = util.MultipleBfs(target, rawRecipe, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
 	case "DFS":
-		result = util.MultipleDfs(req.NamaResep, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
+		result = util.MultipleDfs(target, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
 	case "Bi-BFS":
-		result = util.MultipleBidirectional(req.NamaResep, rawRecipe, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
+		result = util.MultipleBidirectional(target, rawRecipe, reversedRawRecipe, ingredientsTier, req.MaksimalResep, 4)
 	default:
 		http.Error(w, "Unsupported algorithm", http.StatusBadRequest)
 		return
@@ -129,7 +133,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 
 	elapsed := time.Since(start)
 
-	trees, nodeVisited := util.BuildMultipleTrees(req.NamaResep, result)
+	trees, nodeVisited := util.BuildMultipleTrees(target, result)
 
 	// Limit the number of trees to the max requested
 	if len(trees) > req.MaksimalResep {
@@ -148,6 +152,18 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
+func capitalizeFirstLetter(text string) string {
+	re := regexp.MustCompile(`(^|[.!?]\s+)([a-z])`)
+	
+	return re.ReplaceAllStringFunc(text, func(match string) string {
+		// Find where the actual letter starts (after any punctuation and spaces)
+		letterIndex := len(match) - 1
+		
+		// Create the new string with the capitalized letter
+		return match[:letterIndex] + strings.ToUpper(match[letterIndex:])
+	})
+}
+
 func main() {
 	// Ensure data directory exists
 	os.MkdirAll("data", os.ModePerm)
@@ -156,6 +172,6 @@ func main() {
 	loadRecipeData()
 
 	http.HandleFunc("/api/search", searchHandler)
-	log.Println("Server running on http://localhost:8080")
+	log.Println("Server running on AWOKAWOK")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
