@@ -35,7 +35,7 @@ const About = () => {
     console.log("Kirim ke backend:", querySearch);
 
     try {
-      const response = await fetch("http://localhost:8080/api/search", {
+      const response = await fetch("https://tubes2namakelompok-production.up.railway.app/api/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(querySearch),
